@@ -1,0 +1,86 @@
+
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<title>Fornecedores</title>
+
+</head>
+<body>
+	<th:block th:fragment="conteudo">
+		<main role="main">
+		<h3 class="font-weight-light float-left">Fornecedores</h3>
+		<div class="btn-group mb-3 float-right">
+			<a class="btn btn-light" th:href="@{/funcionario/fornecedores/cadastro}"><i class="fas fa-plus"></i> Novo</a>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-hover table-sm crud-list mb-0">
+				<caption class="pb-0">
+					<span th:text="${fornecedores.totalElements == 0} ? 'Nenhum' : 'Há '+${fornecedores.totalElements}"></span> <span th:text="${fornecedores.totalElements>1} ? 'fornecedores cadastrados' : 'fornecedor cadastrado'"></span>.
+				</caption>
+				<thead class="thead-light">
+					<tr>
+						<th scope="col">Nome</th>
+						<th scope="col">CNPJ</th>
+						<th scope="col">Telefone</th>
+						<th scope="col">Celular</th>
+						<th scope="col">E-mail</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="fornecedor : ${fornecedores.content}">
+						<th scope="row" th:text="${fornecedor}"></th>
+						<td th:text="${fornecedor.cnpj()}"></td>
+						<td th:text="${fornecedor.telefone}"></td>
+						<td th:text="${fornecedor.celular}"></td>
+						<td th:text="${fornecedor.email}"></td>
+						<td><a class="btn btn-outline-secondary btn-sm" th:href="@{/funcionario/fornecedores/{idFornecedor}/cadastro(idFornecedor=${fornecedor.idFornecedor},somenteLeitura)}"><i class="fas fa-eye"></i><span> Ver</span></a> <a class="btn btn-outline-primary btn-sm" th:href="@{/funcionario/fornecedores/{idFornecedor}/cadastro(idFornecedor=${fornecedor.idFornecedor})}"><i class="fas fa-edit"></i><span> Editar</span></a> <a class="btn btn-outline-danger btn-sm" data-toggle="modal" href="#modalExcluir" th:data-idobj="${fornecedor.idFornecedor}" th:data-obs="${fornecedor}"><i class="fas fa-trash-alt"></i><span> Excluir</span></a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<nav th:if="${fornecedores.totalPages > 1}" id="paginacao" th:with="atual=${fornecedores.number+1}">
+			<ul class="mt-3 mb-0 pagination pagination-sm justify-content-center justify-content-md-end">
+				<li class="d-none d-sm-block page-item" th:if="${atual > 10}"><a class="page-link" th:href="@{/funcionario/fornecedores(pagina=${atual -10},tamanho=${fornecedores.size})}">-10</a></li>
+				<li class="page-item" th:unless="${fornecedores.isFirst()}"><a class="page-link first" th:href="@{/funcionario/fornecedores(pagina=${atual -1},tamanho=${fornecedores.size})}"><i class="fas fa-angle-double-left"></i><span> Anterior</span></a></li>
+				<li class="page-item" th:classappend="${fornecedores.isFirst()}?'active'"><a class="page-link" th:href="@{/funcionario/fornecedores(pagina='1',tamanho=${fornecedores.size})}">1</a></li>
+				<li class="page-item disabled" th:if="${atual > 3}"><a class="page-link" href="#">...</a></li>
+				<li th:if="${atual > 2}" class="page-item"><a class="page-link" th:href="@{/funcionario/fornecedores(pagina=${atual -1},tamanho=${fornecedores.size})}" th:text="${atual -1}"></a></li>
+				<li th:unless="${fornecedores.isFirst() or fornecedores.isLast()}" class="page-item active"><a class="page-link" th:href="@{/funcionario/fornecedores(pagina=${atual},tamanho=${fornecedores.size})}" th:text="${atual}"></a></li>
+				<li th:if="${atual < (fornecedores.totalPages - 1)}" class="page-item"><a class="page-link" th:href="@{/funcionario/fornecedores(pagina=${atual +1},tamanho=${fornecedores.size})}" th:text="${atual +1}"></a></li>
+				<li class="page-item disabled" th:if="${atual < (fornecedores.totalPages - 2 )}"><a class="page-link" href="#">...</a></li>
+				<li th:if="${fornecedores.totalPages > 1}" class="page-item" th:classappend="${fornecedores.isLast()}?'active'"><a class="page-link" th:href="@{/funcionario/fornecedores(pagina=${fornecedores.totalPages},tamanho=${fornecedores.size})}" th:text="${fornecedores.totalPages}"></a></li>
+				<li class="page-item" th:unless="${fornecedores.isLast()}"><a class="page-link last" th:href="@{/funcionario/fornecedores(pagina=${atual +1},tamanho=${fornecedores.size})}"><span>Próxima </span><i class="fas fa-angle-double-right"></i></a></li>
+				<li class="d-none d-sm-block page-item" th:if="${atual < (fornecedores.totalPages-9)}"><a class="page-link" th:href="@{/funcionario/fornecedores(pagina=${atual +10},tamanho=${fornecedores.size})}">+10</a></li>
+			</ul>
+		</nav>
+		</main>
+		<!--/* Modal */-->
+		<div th:unless="${#lists.isEmpty(fornecedores)}" class="modal fade" id="modalExcluir" tabindex="-1" role="dialog">
+			<div class="modal-dialog  modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Confirmar Exclusão</h5>
+						<button type="button" class="close" data-dismiss="modal">
+							<span>&times;</span>
+						</button>
+					</div>
+					<form th:action="@{/funcionario/fornecedores/excluir}" th:method="delete" novalidate>
+						<input type="hidden" id="idObj" name="idObj" />
+						<div class="modal-body">
+							Confirma a exclusão da fornecedor '<span></span>'?
+							<div class="alert alert-danger mt-3 mb-0">As relações deste fornecedor, se houverem, também serão excluídas.</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-danger">Excluir</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</th:block>
+<th:block th:fragment="jsAdicional"></th:block>
+</body>
+</html>

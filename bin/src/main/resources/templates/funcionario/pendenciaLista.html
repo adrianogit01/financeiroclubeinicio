@@ -1,0 +1,89 @@
+
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<title>Mensalidades a receber</title>
+
+</head>
+<body>
+	<th:block th:fragment="conteudo">
+		<main role="main">
+		<h3 class="font-weight-light float-left">Mensalidades a receber</h3>
+		<div class="btn-group mb-3 float-right">
+			<a class="btn btn-light" th:href="@{/funcionario/pendencias/cadastro}"><i class="fas fa-plus"></i> Nova</a>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-hover table-sm crud-list mb-0">
+				<caption class="pb-0">
+					<span th:text="${pendencias.totalElements == 0} ? 'Nenhuma' : 'Há '+${pendencias.totalElements}"></span> <span th:text="${pendencias.totalElements>1} ? 'mensalidades cadastradas' : 'mensalidade cadastrada'"></span>.
+				</caption>
+				<thead class="thead-light">
+					<tr>
+						<th scope="col">Número</th>
+						<th scope="col">Sócio</th>
+						<th scope="col">Valor original</th>
+						<th scope="col">Valor atualizado</th>
+						<th scope="col">Vencimento</th>
+						<th scope="col">Situação</th>
+						<th scope="col">Recebimento</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="pendencia : ${pendencias.content}">
+						<th scope="row" th:text="${pendencia}"></th>
+						<td th:text="${pendencia.socio}"></td>
+						<td th:text="'R$ ' + ${pendencia.valor}"></td>
+						<td th:text="'R$ ' + ${pendencia.total}"></td>
+						<td th:text="${#temporals.format(pendencia.dataVencimento,'dd/MM/yyyy')}"></td>
+						<td th:text="${pendencia.situacao.nome}"></td>
+						<td th:text="${#temporals.format(pendencia.dataRecebimento,'dd/MM/yyyy')}?:'Em aberto'"></td>
+						<td><a class="btn btn-outline-secondary btn-sm" th:href="@{/funcionario/pendencias/{idPendencia}/cadastro(idPendencia=${pendencia.idPendencia},somenteLeitura)}"><i class="fas fa-eye"></i><span> Ver</span></a> <a class="btn btn-outline-primary btn-sm" th:href="@{/funcionario/pendencias/{idPendencia}/cadastro(idPendencia=${pendencia.idPendencia})}"><i class="fas fa-edit"></i><span> Editar</span></a> <a class="btn btn-outline-danger btn-sm" data-toggle="modal" href="#modalExcluir" th:data-idobj="${pendencia.idPendencia}" th:data-obs="${pendencia}"><i class="fas fa-trash-alt"></i><span> Excluir</span></a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<nav th:if="${pendencias.totalPages > 1}" id="paginacao" th:with="atual=${pendencias.number+1}">
+			<ul class="mt-3 mb-0 pagination pagination-sm justify-content-center justify-content-md-end">
+				<li class="d-none d-sm-block page-item" th:if="${atual > 10}"><a class="page-link" th:href="@{/funcionario/pendencias(pagina=${atual -10},tamanho=${pendencias.size})}">-10</a></li>
+				<li class="page-item" th:unless="${pendencias.isFirst()}"><a class="page-link first" th:href="@{/funcionario/pendencias(pagina=${atual -1},tamanho=${pendencias.size})}"><i class="fas fa-angle-double-left"></i><span> Anterior</span></a></li>
+				<li class="page-item" th:classappend="${pendencias.isFirst()}?'active'"><a class="page-link" th:href="@{/funcionario/pendencias(pagina='1',tamanho=${pendencias.size})}">1</a></li>
+				<li class="page-item disabled" th:if="${atual > 3}"><a class="page-link" href="#">...</a></li>
+				<li th:if="${atual > 2}" class="page-item"><a class="page-link" th:href="@{/funcionario/pendencias(pagina=${atual -1},tamanho=${pendencias.size})}" th:text="${atual -1}"></a></li>
+				<li th:unless="${pendencias.isFirst() or pendencias.isLast()}" class="page-item active"><a class="page-link" th:href="@{/funcionario/pendencias(pagina=${atual},tamanho=${pendencias.size})}" th:text="${atual}"></a></li>
+				<li th:if="${atual < (pendencias.totalPages - 1)}" class="page-item"><a class="page-link" th:href="@{/funcionario/pendencias(pagina=${atual +1},tamanho=${pendencias.size})}" th:text="${atual +1}"></a></li>
+				<li class="page-item disabled" th:if="${atual < (pendencias.totalPages - 2 )}"><a class="page-link" href="#">...</a></li>
+				<li th:if="${pendencias.totalPages > 1}" class="page-item" th:classappend="${pendencias.isLast()}?'active'"><a class="page-link" th:href="@{/funcionario/pendencias(pagina=${pendencias.totalPages},tamanho=${pendencias.size})}" th:text="${pendencias.totalPages}"></a></li>
+				<li class="page-item" th:unless="${pendencias.isLast()}"><a class="page-link last" th:href="@{/funcionario/pendencias(pagina=${atual +1},tamanho=${pendencias.size})}"><span>Próxima </span><i class="fas fa-angle-double-right"></i></a></li>
+				<li class="d-none d-sm-block page-item" th:if="${atual < (pendencias.totalPages-9)}"><a class="page-link" th:href="@{/funcionario/pendencias(pagina=${atual +10},tamanho=${pendencias.size})}">+10</a></li>
+			</ul>
+		</nav>
+		</main>
+		<!--/* Modal */-->
+		<div th:unless="${#lists.isEmpty(pendencias)}" class="modal fade" id="modalExcluir" tabindex="-1" role="dialog">
+			<div class="modal-dialog  modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Confirmar Exclusão</h5>
+						<button type="button" class="close" data-dismiss="modal">
+							<span>&times;</span>
+						</button>
+					</div>
+					<form th:action="@{/funcionario/pendencias/excluir}" th:method="delete" novalidate>
+						<input type="hidden" id="idObj" name="idObj" />
+						<div class="modal-body">
+							Confirma a exclusão da mensalidade '<span></span>'?
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-danger">Excluir</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</th:block>
+	<th:block th:fragment="jsAdicional"></th:block>
+</body>
+</html>

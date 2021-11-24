@@ -1,0 +1,82 @@
+
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<title>Caixas</title>
+
+</head>
+<body>
+	<th:block th:fragment="conteudo">
+		<main role="main">
+		<h3 class="font-weight-light float-left">Caixas</h3>
+		<div class="btn-group mb-3 float-right">
+			<a class="btn btn-light" th:href="@{/funcionario/cofres/cadastro}"><i class="fas fa-plus"></i> Novo</a>
+		</div>
+		<div class="table-responsive">
+			<table class="table table-hover table-sm crud-list mb-0">
+				<caption class="pb-0">
+					<span th:text="${cofres.totalElements == 0} ? 'Nenhuma' : 'Há '+${cofres.totalElements}"></span> <span th:text="${cofres.totalElements>1} ? 'cofres cadastrados' : 'cofre cadastrado'"></span>.
+				</caption>
+				<thead class="thead-light">
+					<tr>
+						<th scope="col">Sigla</th>
+						<th scope="col">Descrição</th>
+						<th scope="col">Saldo</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="cofre : ${cofres.content}">
+						<th scope="row" th:text="${cofre.sigla}"></th>
+						<td th:text="${cofre.descricao}"></td>
+						<td th:text="|R$ ${cofre.saldoAtual}|"></td>
+						<td><a class="btn btn-outline-secondary btn-sm" th:href="@{/funcionario/cofres/{idCofre}/cadastro(idCofre=${cofre.idCofre},somenteLeitura)}"><i class="fas fa-eye"></i><span> Ver</span></a> <a class="btn btn-outline-primary btn-sm" th:href="@{/funcionario/cofres/{idCofre}/cadastro(idCofre=${cofre.idCofre})}"><i class="fas fa-edit"></i><span> Editar</span></a> <a class="btn btn-outline-danger btn-sm" data-toggle="modal" href="#modalExcluir" th:data-idobj="${cofre.idCofre}" th:data-obs="${cofre}"><i class="fas fa-trash-alt"></i><span> Excluir</span></a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<nav th:if="${cofres.totalPages > 1}" id="paginacao" th:with="atual=${cofres.number+1}">
+			<ul class="mt-3 mb-0 pagination pagination-sm justify-content-center justify-content-md-end">
+				<li class="d-none d-sm-block page-item" th:if="${atual > 10}"><a class="page-link" th:href="@{/funcionario/cofres(pagina=${atual -10},tamanho=${cofres.size})}">-10</a></li>
+				<li class="page-item" th:unless="${cofres.isFirst()}"><a class="page-link first" th:href="@{/funcionario/cofres(pagina=${atual -1},tamanho=${cofres.size})}"><i class="fas fa-angle-double-left"></i><span> Anterior</span></a></li>
+				<li class="page-item" th:classappend="${cofres.isFirst()}?'active'"><a class="page-link" th:href="@{/funcionario/cofres(pagina='1',tamanho=${cofres.size})}">1</a></li>
+				<li class="page-item disabled" th:if="${atual > 3}"><a class="page-link" href="#">...</a></li>
+				<li th:if="${atual > 2}" class="page-item"><a class="page-link" th:href="@{/funcionario/cofres(pagina=${atual -1},tamanho=${cofres.size})}" th:text="${atual -1}"></a></li>
+				<li th:unless="${cofres.isFirst() or cofres.isLast()}" class="page-item active"><a class="page-link" th:href="@{/funcionario/cofres(pagina=${atual},tamanho=${cofres.size})}" th:text="${atual}"></a></li>
+				<li th:if="${atual < (cofres.totalPages - 1)}" class="page-item"><a class="page-link" th:href="@{/funcionario/cofres(pagina=${atual +1},tamanho=${cofres.size})}" th:text="${atual +1}"></a></li>
+				<li class="page-item disabled" th:if="${atual < (cofres.totalPages - 2 )}"><a class="page-link" href="#">...</a></li>
+				<li th:if="${cofres.totalPages > 1}" class="page-item" th:classappend="${cofres.isLast()}?'active'"><a class="page-link" th:href="@{/funcionario/cofres(pagina=${cofres.totalPages},tamanho=${cofres.size})}" th:text="${cofres.totalPages}"></a></li>
+				<li class="page-item" th:unless="${cofres.isLast()}"><a class="page-link last" th:href="@{/funcionario/cofres(pagina=${atual +1},tamanho=${cofres.size})}"><span>Próxima </span><i class="fas fa-angle-double-right"></i></a></li>
+				<li class="d-none d-sm-block page-item" th:if="${atual < (cofres.totalPages-9)}"><a class="page-link" th:href="@{/funcionario/cofres(pagina=${atual +10},tamanho=${cofres.size})}">+10</a></li>
+			</ul>
+		</nav>
+		</main>
+		<!--/* Modal */-->
+		<div th:unless="${#lists.isEmpty(cofres)}" class="modal fade" id="modalExcluir" tabindex="-1" role="dialog">
+			<div class="modal-dialog  modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Confirmar Exclusão</h5>
+						<button type="button" class="close" data-dismiss="modal">
+							<span>&times;</span>
+						</button>
+					</div>
+					<form th:action="@{/funcionario/cofres/excluir}" th:method="delete" novalidate>
+						<input type="hidden" id="idObj" name="idObj" />
+						<div class="modal-body">
+							Confirma a exclusão da cofre '<span></span>'?
+							<div class="alert alert-danger mt-3 mb-0">As movimentações feitas neste cofre, se houver, também serão excluídas.</div>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-danger">Excluir</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</th:block>
+<th:block th:fragment="jsAdicional"></th:block>
+</body>
+</html>

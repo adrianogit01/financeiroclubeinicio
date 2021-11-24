@@ -1,0 +1,38 @@
+
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<body>
+	<th:block th:fragment="lateral">
+		<nav id="sidebar" class="bg-primary navbar-dark active d-print-none">
+			<div id="sidebarExpand" class="bg-primary mt-2 mb-2 text-center d-none d-md-block"><i class="fas fa-exchange-alt"></i></div>
+			<ul class="list-unstyled navbar-nav">
+				<li class="nav-item"><a class="nav-link" th:classappend="${ativo[0] == 'painel'}? 'active'" th:href="@{/funcionario/geral}" title="Visão Geral"> <i class="fab fas fa-chart-pie"></i> Visão Geral
+				</a></li>
+				<li class="nav-item"><a class="nav-link" th:classappend="${ativo[0] == 'clube'}? 'active'" href="#clubeSubmenu" data-toggle="collapse" title="Clube"> <i class="fas fas fa-futbol"></i> Clube
+				</a>
+					<ul class="collapse list-unstyled" id="clubeSubmenu">
+						<li><a class="nav-link" th:classappend="${ativo[1] == 'cadastro'}? 'active'" th:href="@{/funcionario/clube/cadastro}" title="Cadastro do Clube">Cadastro do Clube</a></li>
+						<li><a class="nav-link" th:classappend="${ativo[1] == 'socios'}? 'active'" th:href="@{/funcionario/socios}" title="Cadastro de Sócios">Sócios</a></li>
+						<li><a class="nav-link" th:classappend="${ativo[1] == 'fornecedores'}? 'active'" th:href="@{/funcionario/fornecedores}" title="Cadastro de Fornecedores">Fornecedores</a></li>
+					</ul></li>
+				<li class="nav-item"><a class="nav-link" th:classappend="${ativo[0] == 'financeiro'}? 'active'" href="#financasSubmenu" data-toggle="collapse" title="Caixas e Pendencias"> <i class="far fa-money-bill-alt"></i> Caixas e Pendencias
+				</a>
+					<ul class="collapse list-unstyled" id="financasSubmenu">
+						<li><a class="nav-link" th:classappend="${ativo[1] == 'cofres'}? 'active'" th:href="@{/funcionario/cofres}" title="Cadastro de Caixas">Caixas</a></li>
+						<li><a class="nav-link" th:classappend="${ativo[1] == 'pendencias'}? 'active'" th:href="@{/funcionario/pendencias}" title="Cadastro de Pendencias">Mens. a Receber</a></li>
+					</ul></li>
+				<li class="nav-item"><a class="nav-link" th:classappend="${ativo[0] == 'contabilidade'}? 'active'" href="#contabilidadeSubmenu" data-toggle="collapse" title="Diversos"> <i class="fas fa-archive"></i> Diversos
+				</a>
+					<ul class="collapse list-unstyled" id="contabilidadeSubmenu">
+						<li><a class="nav-link" th:classappend="${ativo[1] == 'categorias'}? 'active'" th:href="@{/funcionario/categorias}" title="Cadastro de Categorias e Subcategorias">Categorias</a></li>
+						<li><a class="nav-link" th:classappend="${ativo[1] == 'periodos'}? 'active'" th:href="@{/funcionario/periodos}" title="Cadastro de Períodos">Períodos</a></li>
+						<li><a class="nav-link" th:classappend="${ativo[1] == 'movimentos'}? 'active'" th:href="@{/funcionario/movimentos}" title="Cadastro de Movimentos">Movimentos</a></li>
+					</ul></li>
+				<li class="nav-item"><a class="nav-link" th:classappend="${ativo[0] == 'relatorios'}? 'active'" th:href="@{/funcionario/relatorios}" title="Relatórios"> <i class="fas fa-file-alt"></i> Relatórios
+				</a></li>
+			</ul>
+		</nav>
+		<div id="sidebarCollapse" class="bg-primary text-light active d-md-none"></div>
+	</th:block>
+</body>
+</html>
