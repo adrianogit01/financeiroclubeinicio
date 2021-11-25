@@ -1,4 +1,4 @@
-package financeiroclube.service;
+/*package financeiroclube.service;
 
 import org.springframework.mail.SimpleMailMessage;
 
@@ -9,3 +9,4 @@ public interface EmailService {
 	public void enviarEmail(String para, String assunto, String mensagem);
 
 }
+*/

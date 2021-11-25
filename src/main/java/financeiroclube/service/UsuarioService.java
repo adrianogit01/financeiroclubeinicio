@@ -14,8 +14,8 @@ public interface UsuarioService extends CrudService<Usuario, Long> {
 
 	public Usuario lerLogado();
 
-	public boolean redefinirSenha(String username);
+	//public boolean redefinirSenha(String username);
 
-	public boolean redefinirSenha(String username, String token, String password);
+	//public boolean redefinirSenha(String username, String token, String password);
 
 }

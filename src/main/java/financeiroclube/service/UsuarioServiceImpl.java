@@ -27,8 +27,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-	@Autowired
-	private EmailService emailService;
+	//@Autowired
+	//private EmailService emailService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -98,7 +98,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 		salvar(usuario);
 	}
 
-	@Override
+	/*@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public boolean redefinirSenha(String username) {
 		Usuario usuario = ler(username);
@@ -109,14 +109,14 @@ public class UsuarioServiceImpl implements UsuarioService {
 					+ usuario.getUsername() + "&token=" + getToken(usuario.getPassword())
 					+ "\n\nCaso não consiga clicar no link acima, copie-o e cole em seu navegador."
 					+ "\n\nPor segurança este link só é válido até o final do dia.";
-			emailService.enviarEmail(para, assunto, mensagem);
+			//emailService.enviarEmail(para, assunto, mensagem);
 			return true;
 		} else {
 			return false;
 		}
-	}
+	}*/
 
-	@Override
+	/*@Override
 	public boolean redefinirSenha(String username, String token, String password) {
 		Usuario usuario = usuarioRepository.findOneByUsername(username);
 		if (usuario != null && getToken(usuario.getPassword()).equals(token)) {
@@ -126,16 +126,16 @@ public class UsuarioServiceImpl implements UsuarioService {
 		} else {
 			return false;
 		}
-	}
+	}*/
 
-	private String getToken(String texto) {
+	/*private String getToken(String texto) {
 		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("America/Sao_Paulo"));
 		String d = "" + calendar.get(Calendar.DAY_OF_YEAR);
 		String a = "" + (calendar.get(Calendar.YEAR) - 2000);
 		String regex = "\\\\|/|\\?|\\.|&|\\$"; 
 
 		return texto.substring(8).replaceAll(regex, d) + a;
-	}
+	}*/
 
 	@Override
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)

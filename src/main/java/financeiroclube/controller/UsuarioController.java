@@ -70,7 +70,7 @@ public class UsuarioController {
 		return new ModelAndView("fragmentos/layoutSite", "conteudo", "usuarioRedefinirSenha");
 	}
 
-	@PostMapping("/redefinir")
+	/*@PostMapping("/redefinir")
 	public String postRedefinir(@RequestParam("username") String username) {
 		if (usuarioService.redefinirSenha(username)) {
 			return "redirect:/conta/redefinir?email&username=" + username;
@@ -87,5 +87,5 @@ public class UsuarioController {
 		} else {
 			return "redirect:/conta/redefinir?invalido";
 		}
-	}
+	}*/
 }

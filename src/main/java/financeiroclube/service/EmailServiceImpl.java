@@ -1,4 +1,4 @@
-package financeiroclube.service;
+/*package financeiroclube.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -27,3 +27,5 @@ public class EmailServiceImpl implements EmailService {
 	}
 
 }
+
+*/
