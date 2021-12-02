@@ -1,4 +1,4 @@
-// Cálculo de campo totalizador, usar classes calc-add, calc-sub, calc-tot
+
 $('input.calc-add,input.calc-sub').on('change keyup', function(){
 	var tot = 0;
 	$('input.calc-add').each(function(){
