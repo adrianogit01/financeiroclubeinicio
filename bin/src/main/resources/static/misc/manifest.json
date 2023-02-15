@@ -1,0 +1,10 @@
+{
+  "name": "Financeiro Clube",
+  "short_name": "FinanceiroClube",
+  "theme_color": "#04cf8e",
+  "background_color": "#04cf8e",
+  "display": "standalone",
+  "Scope": "/",
+  "start_url": "/autenticado",
+  "splash_pages": null
+}

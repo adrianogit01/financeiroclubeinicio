@@ -1,0 +1,23 @@
+
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<title>Financeiro Clube</title>
+
+</head>
+<body>
+	<th:block th:fragment="conteudo">
+		<main role="main" class="container">
+		<div class="jumbotron mb-0 m-auto">
+			<h1 class="display-4">Olá!</h1>
+			<p class="lead">Bem vindo ao Controle Financeiro do Clube dos 30!</p>
+			<hr class="my-4">
+			<p>Faça o cadastro no botão abaixo.</p>
+			<a class="btn btn-primary btn-lg" th:href="@{/conta/cadastrar}" role="button">Registrar</a><a class="ml-3" th:href="@{/entrar}">Já tenho uma conta.</a>
+		</div>
+		</main>
+	</th:block>
+	<th:block th:fragment="jsAdicional"></th:block>
+</body>
+</html>

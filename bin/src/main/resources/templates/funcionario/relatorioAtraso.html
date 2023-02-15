@@ -1,0 +1,98 @@
+
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+<th:block th:fragment="cssAdicional"></th:block>
+<title>Mensalidades Atrasadas</title>
+
+</head>
+<body>
+	<th:block th:fragment="conteudo">
+		<main role="main">
+		<h3 class="font-weight-light">Mensalidades Atrasadas</h3>
+		<div th:unless="${haClube}" class="alert alert-warning">
+			<h6>Clube não cadastrado</h6>
+			Para gerar este relatório é preciso completar o cadastro do seu clube, <a class="text-warning" th:href="@{/funcionario/clube/cadastro}">clique aqui</a>.
+		</div>
+		<p th:if="${haClube}">Este relatório traz em detalhes os atrasos nas mensalidades do Clube.</p>
+		<form class="needs-validation" th:if="${haClube}" target="_blank" th:action="@{/funcionario/relatorios/atraso}" th:method="post" novalidate>
+			<fieldset class="mb-3">
+				<div class="card">
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">
+							<p class="text-primary">
+								<i class="fas fa-filter"></i> Filtros
+							</p>
+							<div class="form-row">Este relatório não possui filtros.</div>
+						</li>
+					</ul>
+				</div>
+			</fieldset>
+			<button type="submit" class="btn btn-primary">Gerar</button>
+			<a class="btn btn-secondary" th:href="@{/funcionario/relatorios}" role="button">Voltar</a>
+		</form>
+		</main>
+	</th:block>
+	<th:block th:fragment="relatorio">
+		<main role="main">
+		<div id="relatorio" class="page A4 retrato">
+			<div id="relatorio_cabecalho" class="text-center" th:object="${clube}">
+				<h5 class="font-weight-bold" th:text="*{nome}"></h5>
+				<p>
+					<small th:text="*{rua} +', '+ *{numeroEnd}"></small><small th:unless="${clube.complementoEnd==null}" th:text="', '+ *{complementoEnd}"></small><br /> <small th:text="*{bairro}"></small><br /> <small th:text="'Funcionario: ' + *{funcionario.nomeCompleto()}"></small>
+				</p>
+			</div>
+			<div id="relatorio_titulo" class="text-center">
+				<h6 class="font-weight-bold">Atrasos</h6>
+				<p>
+					<small th:text="'Mensalidades vencidas até: ' + ${#temporals.format(fim,'dd/MM/yyyy')}"></small>
+				</p>
+			</div>
+			<div id="relatorio_conteudo">
+				<table class="table table-sm table-borderless" th:each="entrada : ${atraso}">
+					<thead class="border-bottom">
+						<tr>
+							<th scope="colgroup" colspan="7" th:text="'Socio: ' + ${entrada.key}"></th>
+						</tr>
+						<tr>
+							<th>Mensalidade</th>
+							<th>Vencimento</th>
+							<th>Valor</th>
+							<th>Juros</th>
+							<th>Descontos</th>
+							<th>Total atual</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="pendencia : ${entrada.value}">
+							<td th:text="${pendencia}"></td>
+							<td th:text="${#temporals.format(pendencia.dataVencimento,'dd/MM/yyyy')}"></td>
+							<td th:text="'R$ ' + ${pendencia.valor}"></td>
+							<td th:text="'R$ ' + ${pendencia.juros}"></td>
+							<td th:text="'R$ ' + ${pendencia.desconto}"></td>
+							<td th:text="'R$ ' + ${pendencia.total}"></td>
+						</tr>
+						<tr>
+							<td colspan="5"></td>
+							<th scope="row">Subtotal</th>
+							<td th:text="'R$ ' + ${subtotais.get(entrada.key)}"></td>
+						</tr>
+					</tbody>
+				</table>
+				<table class="table table-sm table-borderless" th:if="${#maps.isEmpty(atraso)}">
+					<tbody>
+						<tr>
+							<td>Sem movimento.</td>
+						</tr>
+					</tbody>
+				</table>
+				<p>
+					<b>Total:</b> <span th:text="'R$ '+ ${total}"></span>
+				</p>
+			</div>
+		</div>
+		</main>
+	</th:block>
+	<th:block th:fragment="jsAdicional"></th:block>
+</body>
+</html>

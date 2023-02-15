@@ -1,0 +1,164 @@
+
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<title>Mensalidade a receber</title>
+
+</head>
+<body>
+	<th:block th:fragment="conteudo">
+		<main role="main">
+		<h3 class="font-weight-light">Cadastro da Pendencia</h3>
+	
+		<p  th:text="${pendencia.idPendencia == null} ? 'Ao salvar, uma nova pendencia será criada.' : (${param.somenteLeitura} ? 'As informações não podem ser alteradas neste modo.' :  'Ao salvar, as informações da pendencia atual serão atualizadas.')"></p>
+		<form th:action="@{/funcionario/pendencias/cadastro}" th:object="${pendencia}" th:method="${pendencia.idPendencia == null} ? post : put" novalidate>
+			<fieldset th:disabled="${param.somenteLeitura}" class="mb-3">
+				<input type="hidden" th:field="*{idPendencia}" />
+				<div class="card">
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">
+							<p class="text-primary">
+								<i class="fas fa-money-check-alt"></i> Informações principais
+							</p>
+							<div class="form-row">
+								<div class="form-group col-md-3">
+									<label>Data de emissão</label> <input class="form-control" type="date" th:errorclass="is-invalid" th:field="*{dataEmissao}" placeholder="Data de emissão" />
+									<div class="invalid-feedback" th:errors="*{dataEmissao}"></div>
+								</div>
+								<div class="form-group col-md-3">
+									<label>Número</label>
+									<div class="input-group">
+										<input autofocus class="form-control" type="text" th:errorclass="is-invalid" th:field="*{numero}" placeholder="Número" /> <input class="form-control last" type="text" th:errorclass="is-invalid" th:field="*{parcela}" placeholder="Parcela" />
+										<div class="invalid-feedback" th:errors="*{numero}"></div>
+										<div class="invalid-feedback" th:errors="*{parcela}"></div>
+									</div>
+								</div>
+								<div class="form-group col-md-3">
+									<label>Motivo da emissão</label> <select class="custom-select" id="motivoEmissao" th:errorclass="is-invalid" th:field="*{motivoEmissao}">
+										<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
+										<option th:each="motivo : ${motivosEmissao}" th:value="${motivo}" th:text="${motivo.nome}"></option>
+									</select>
+									<div class="invalid-feedback" th:errors="*{motivoEmissao}"></div>
+								</div>
+								<div class="form-group col-md-3">
+									<label>Data de vencimento</label> <input class="form-control" type="date" th:errorclass="is-invalid" th:field="*{dataVencimento}" placeholder="Data de vencimento" />
+									<div class="invalid-feedback" th:errors="*{dataVencimento}"></div>
+								</div>
+							</div>
+							<div class="form-row">
+							<!-- local de inser��o de s�cio -->
+							<div class="form-group col-md-6">
+									<!--<label>Sócio</label> <select  class="custom-select" id="socio" th:errorclass="is-invalid" th:field="*{socio}">
+										<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
+										<option th:if="${#lists.isEmpty(socios)}" value="" disabled>Não há sócios cadastrados</option>
+										<option th:each="socio : ${socios}" th:value="${socio.idSocio}" th:text="${socio}"></option>
+									</select>
+									<div class="invalid-feedback" th:errors="*{socio}"></div>-->
+									<label>Sócio</label> <select  class="custom-select" id="usuario" th:errorclass="is-invalid" th:field="*{usuario}">
+										<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
+										<option th:if="${#lists.isEmpty(usuarios)}" value="" disabled>Não há sócios cadastrados</option>
+										<option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario}"></option>
+									</select>
+									<div class="invalid-feedback" th:errors="*{usuario}"></div>
+								</div>
+								<div class="form-group col-md-3">
+									<label>Juros por atraso</label>
+									<div class="input-group">
+										<input class="form-control" type="number" step=".001" th:errorclass="is-invalid" th:field="*{percentualJurosMes}" placeholder="Porcentagem" />
+										<div class="input-group-append">
+											<span class="input-group-text last">% ao mês</span>
+										</div>
+										<div class="invalid-feedback" th:errors="*{percentualJurosMes}"></div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li class="list-group-item">
+							<p class="text-primary">
+								<i class="fas fa-dollar-sign"></i> Valores
+							</p>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Valor</label>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text">R$</span>
+										</div>
+										<input class="form-control last calc-add" type="number" step=".01" th:errorclass="is-invalid" th:field="*{valor}" placeholder="Valor da pendencia" />
+										<div class="invalid-feedback" th:errors="*{valor}"></div>
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Descontos</label>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text">R$</span>
+										</div>
+										<input class="form-control last calc-sub" type="number" step=".01" th:errorclass="is-invalid" th:field="*{desconto}" placeholder="Descontos concedidos" />
+										<div class="invalid-feedback" th:errors="*{desconto}"></div>
+									</div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Juros</label>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text">R$</span>
+										</div>
+										<input class="form-control last calc-add" type="number" step=".01" th:errorclass="is-invalid" th:field="*{juros}" placeholder="Juros" />
+										<div class="invalid-feedback" th:errors="*{juros}"></div>
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Total</label>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text">R$</span>
+										</div>
+										<input readonly class="form-control last calc-tot" type="number" step=".01" th:errorclass="is-invalid" th:field="*{total}" placeholder="Total" />
+										<div class="invalid-feedback" th:errors="*{total}"></div>
+									</div>
+								</div>
+							</div>
+						</li>
+						<li th:unless="${pendencia.idPendencia == null}" class="list-group-item">
+							<p class="text-primary">
+								<i class="fas fa-hand-holding-usd"></i> Acompanhamento
+							</p>
+							<div class="form-row">
+								<div class="form-group col-md-4">
+									<label>Situação</label> <select class="custom-select" id="situacao" th:errorclass="is-invalid" th:field="*{situacao}">
+										<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
+										<option th:each="situacao : ${situacoes}" th:value="${situacao}" th:text="${situacao.nome}"></option>
+									</select>
+									<div class="invalid-feedback" th:errors="*{situacao}"></div>
+								</div>
+								<div class="form-group col-md-4">
+									<label>Data de recebimento</label> <input class="form-control" type="date" th:errorclass="is-invalid" th:field="*{dataRecebimento}" placeholder="Data de baixa" />
+									<div class="invalid-feedback" th:errors="*{dataRecebimento}"></div>
+								</div>
+								<div class="form-group col-md-4">
+									<label>Motivo da baixa</label> <select class="custom-select" id="motivoBaixa" th:errorclass="is-invalid" th:field="*{motivoBaixa}">
+										<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
+										<option value="">---</option>
+										<option th:each="motivo : ${motivosBaixa}" th:value="${motivo}" th:text="${motivo.nome}"></option>
+									</select>
+									<div class="invalid-feedback" th:errors="*{motivoBaixa}"></div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</fieldset>
+			<button th:unless="${param.somenteLeitura}" type="submit" class="btn btn-primary">Salvar</button>
+			<a class="btn btn-secondary" th:href="@{/funcionario/pendencias}" role="button" th:text="${param.somenteLeitura}?'Voltar':_">Cancelar</a>
+		</form>
+		</main>
+	</th:block>
+<th:block th:fragment="jsAdicional">
+<script th:src="@{/js/novo.calculos.js}"></script>
+</th:block>
+</body>
+</html>

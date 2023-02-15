@@ -1,0 +1,106 @@
+
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Sócio -->
+<title>Fornecedor</title>
+
+</head>
+<body>
+	<th:block th:fragment="conteudo">
+		<main role="main">
+		<h3 class="font-weight-light">Cadastro de Fornecedor</h3>
+		<div th:unless="${haClube}" class="alert alert-warning">
+			<h6>Clube não cadastrado</h6>
+			Para cadastrar fornecedores é preciso completar o cadastro do seu clube, <a class="text-warning" th:href="@{/funcionario/clube/cadastro}">clique aqui</a>.
+		</div>
+		<p th:if="${haClube}" th:text="${fornecedor.idFornecedor == null} ? 'Ao salvar, uma nova fornecedor será criada no clube.' : (${param.somenteLeitura} ? 'As informações não podem ser alteradas neste modo.' :  'Ao salvar, as informações da fornecedor atual serão atualizadas.')"></p>
+		<form th:action="@{/funcionario/fornecedores/cadastro}" th:if="${haClube}" th:object="${fornecedor}" th:method="${fornecedor.idFornecedor == null} ? post : put">
+			<fieldset th:disabled="${param.somenteLeitura}" class="mb-3">
+				<input type="hidden" th:field="*{clube}" /> <input type="hidden" th:field="*{idFornecedor}" />
+				<div class="card">
+					<ul class="list-group list-group-flush" id="accordion">
+						<li class="list-group-item">
+							<p class="text-primary">
+								<i class="fas fa-user-tie"></i> Informações principais
+							</p>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Nome Fantasia</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{nome}" placeholder="Nome da empresa" />
+									<div class="invalid-feedback" th:errors="*{nome}"></div>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Nome Empresarial</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{nomeEmpresarial}" placeholder="O nome empresarial do fornecedor" />
+									<div class="invalid-feedback" th:errors="*{nomeEmpresarial}"></div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Nome do Responsável</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{nomeResponsavel}" placeholder="Nome do responsável pela empresa" />
+									<div class="invalid-feedback" th:errors="*{nomeResponsavel}"></div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-4">
+									<label>CNPJ</label> <input class="form-control" type="number" th:errorclass="is-invalid" th:field="*{cnpj}" placeholder="O CNPJ do fornecedor" />
+									<div class="invalid-feedback" th:errors="*{cnpj}"></div>
+									<small>Somente números</small>
+								</div>
+							</div>
+						</li>
+						<li class="list-group-item">
+							<p class="text-primary">
+								<i class="fas fa-envelope"></i> Dados de contato
+							</p>
+							<div class="form-group">
+								<label>E-mail</label> <input class="form-control" type="email" th:errorclass="is-invalid" th:field="*{email}" placeholder="O e-mail da fornecedor" />
+								<div class="invalid-feedback" th:errors="*{email}"></div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Telefone</label> <input class="form-control" type="tel" th:errorclass="is-invalid" th:field="*{telefone}" placeholder="Telefone com DDD" />
+									<div class="invalid-feedback" th:errors="*{telefone}"></div>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Celular</label> <input class="form-control" type="tel" th:errorclass="is-invalid" th:field="*{celular}" placeholder="Celular com DDD" />
+									<div class="invalid-feedback" th:errors="*{celular}"></div>
+								</div>
+							</div>
+						</li>
+						<li class="list-group-item">
+							<p class="text-primary">
+								<i class="fas fa-map-marker-alt"></i> Residência
+							</p>
+							<div class="form-row">
+								<div class="form-group col-md-10">
+									<label>Rua</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{rua}" placeholder="O nome da rua do fornecedor" />
+									<div class="invalid-feedback" th:errors="*{rua}"></div>
+								</div>
+								<div class="form-group col-md-2">
+									<label>Número</label> <input class="form-control" type="number" th:errorclass="is-invalid" th:field="*{numeroEnd}" placeholder="O nº" />
+									<div class="invalid-feedback" th:errors="*{numeroEnd}"></div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Complemento</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{complementoEnd}" placeholder="Complemento do endereço" />
+									<div class="invalid-feedback" th:errors="*{complementoEnd}"></div>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Bairro</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{bairro}" placeholder="Bairro ou distrito" />
+									<div class="invalid-feedback" th:errors="*{bairro}"></div>
+								</div>
+							</div>
+					</ul>
+				</div>
+			</fieldset>
+			<button th:unless="${param.somenteLeitura}" type="submit" class="btn btn-primary">Salvar</button>
+			<a class="btn btn-secondary" th:href="@{/funcionario/fornecedores}" role="button" th:text="${param.somenteLeitura}?'Voltar':_">Cancelar</a>
+		</form>
+		</main>
+	</th:block>
+<th:block th:fragment="jsAdicional">
+<script th:src="@{/js/meu.linhas-dinamicas.js}"></script>
+</th:block>
+</body>
+</html>

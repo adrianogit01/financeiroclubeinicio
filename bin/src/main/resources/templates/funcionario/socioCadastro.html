@@ -1,0 +1,109 @@
+
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Sócio -->
+<title>Sócio</title>
+
+</head>
+<body>
+	<th:block th:fragment="conteudo">
+		<main role="main">
+		<h3 class="font-weight-light">Cadastro de Sócio</h3>
+		<div th:unless="${haClube}" class="alert alert-warning">
+			<h6>Clube não cadastrado</h6>
+			Para cadastrar socios é preciso completar o cadastro do seu clube, <a class="text-warning" th:href="@{/funcionario/clube/cadastro}">clique aqui</a>.
+		</div>
+		<p th:if="${haClube}" th:text="${socio.idSocio == null} ? 'Ao salvar, uma nova socio será criada no clube.' : (${param.somenteLeitura} ? 'As informações não podem ser alteradas neste modo.' :  'Ao salvar, as informações da socio atual serão atualizadas.')"></p>
+		<form th:action="@{/funcionario/socios/cadastro}" th:if="${haClube}" th:object="${socio}" th:method="${socio.idSocio == null} ? post : put">
+			<fieldset th:disabled="${param.somenteLeitura}" class="mb-3">
+				<input type="hidden" th:field="*{clube}" /> <input type="hidden" th:field="*{idSocio}" />
+				<div class="card">
+					<ul class="list-group list-group-flush" id="accordion">
+						<li class="list-group-item">
+							<p class="text-primary">
+								<i class="fas fa-user"></i> Informações principais
+							</p>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Nome</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{nome}" placeholder="Nome do sócio" />
+									<div class="invalid-feedback" th:errors="*{nome}"></div>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Sobrenome</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{sobrenome}" placeholder="Sobrenome do sócio" />
+									<div class="invalid-feedback" th:errors="*{sobrenome}"></div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-3">
+									<label>CPF</label> <input class="form-control" type="number" th:errorclass="is-invalid" th:field="*{cpf}" placeholder="O CPF do sócio" />
+									<div class="invalid-feedback" th:errors="*{cpf}"></div>
+									<small>Somente números</small>
+								</div>
+								<div class="form-group col-md-3">
+									<label>Nome da Mãe</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{nomeMae}" placeholder="Nome da mãe do sócio" />
+									<div class="invalid-feedback" th:errors="*{nomeMae}"></div>
+								</div>
+								<div class="form-group col-md-3">
+									<label>Data de Nascimento</label> <input class="form-control" type="date" th:errorclass="is-invalid" th:field="*{nascimento}" placeholder="A data de nascimento" />
+									<div class="invalid-feedback" th:errors="*{nascimento}"></div>
+								</div>
+							</div>
+						</li>
+						<li class="list-group-item">
+							<p class="text-primary">
+								<i class="fas fa-envelope"></i> Dados de contato
+							</p>
+							<div class="form-group">
+								<label>E-mail</label> <input class="form-control" type="email" th:errorclass="is-invalid" th:field="*{email}" placeholder="O e-mail do sócio" />
+								<div class="invalid-feedback" th:errors="*{email}"></div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Telefone</label> <input class="form-control" type="tel" th:errorclass="is-invalid" th:field="*{telefone}" placeholder="Telefone com DDD" />
+									<div class="invalid-feedback" th:errors="*{telefone}"></div>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Celular</label> <input class="form-control" type="tel" th:errorclass="is-invalid" th:field="*{celular}" placeholder="Celular com DDD" />
+									<div class="invalid-feedback" th:errors="*{celular}"></div>
+								</div>
+							</div>
+						</li>
+						<li class="list-group-item">
+							<p class="text-primary">
+								<i class="fas fa-map-marker-alt"></i> Residência
+							</p>
+							<div class="form-row">
+								<div class="form-group col-md-10">
+									<label>Rua</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{rua}" placeholder="O nome da rua do sócio" />
+									<div class="invalid-feedback" th:errors="*{rua}"></div>
+								</div>
+								<div class="form-group col-md-2">
+									<label>Número</label> <input class="form-control" type="number" th:errorclass="is-invalid" th:field="*{numeroEnd}" placeholder="O nº" />
+									<div class="invalid-feedback" th:errors="*{numeroEnd}"></div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Complemento</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{complementoEnd}" placeholder="Complemento do endereço" />
+									<div class="invalid-feedback" th:errors="*{complementoEnd}"></div>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Bairro</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{bairro}" placeholder="Bairro ou distrito" />
+									<div class="invalid-feedback" th:errors="*{bairro}"></div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</fieldset>
+			<button th:unless="${param.somenteLeitura}" type="submit" class="btn btn-primary">Salvar</button>
+			<a class="btn btn-secondary" th:href="@{/funcionario/socios}" role="button" th:text="${param.somenteLeitura}?'Voltar':_">Cancelar</a>
+		</form>
+		</main>
+	</th:block>
+<th:block th:fragment="jsAdicional">
+<script th:src="@{/js/meu.linhas-dinamicas.js}"></script>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,67 @@
+
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<title>Caixa</title>
+
+</head>
+<body>
+	<th:block th:fragment="conteudo">
+		<main role="main">
+		<h3 class="font-weight-light">Cadastro do Caixa</h3>
+	
+		<p  th:text="${cofre.idCofre == null} ? 'Ao salvar, um novo cofre será criado no clube.' : (${param.somenteLeitura} ? 'As informações não podem ser alteradas neste modo.' :  'Ao salvar, as informações do cofre atual serão atualizadas.')"></p>
+		<!--n frnt ctxa rmvd -->
+		<form th:action="@{/funcionario/cofres/cadastro}" th:object="${cofre}" th:method="${cofre.idCofre == null} ? post : put">
+			<fieldset th:disabled="${param.somenteLeitura}" class="mb-3">
+				<input type="hidden" th:field="*{idCofre}" />
+				<div class="card">
+					<ul class="list-group list-group-flush" id="accordion">
+						<li class="list-group-item">
+							<p class="text-primary">
+								<i class="fas fa-money-bill-alt"></i> Informações principais
+							</p>
+							<div class="form-row">
+								<div class="form-group col-md-2">
+									<label>Sigla</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{sigla}" placeholder="Uma abrevitura" />
+									<div class="invalid-feedback" th:errors="*{sigla}"></div>
+								</div>
+								<div class="form-group" th:classappend="${param.somenteLeitura}?'col-md-4':'col-md-7'">
+									<label>Descrição</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{descricao}" placeholder="Uma descrição completa" />
+									<div class="invalid-feedback" th:errors="*{descricao}"></div>
+								</div>
+								<div class="form-group col-md-3">
+									<label>Saldo de abertura</label>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text">R$</span>
+										</div>
+										<input class="form-control last" type="number" step=".01" th:errorclass="is-invalid" th:field="*{saldoInicial}" placeholder="Saldo inicial do cofre" />
+										<div class="invalid-feedback" th:errors="*{saldoInicial}"></div>
+										<small th:if="${cofre.idCofre != null}">Alterar este campo afetará o saldo atual do cofre</small>
+									</div>
+								</div>
+								<div th:if="${param.somenteLeitura}" class="form-group col-md-3">
+									<label>Saldo atual</label>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text">R$</span>
+										</div>
+										<input class="form-control last" type="number" step=".01" th:errorclass="is-invalid" th:field="*{saldoAtual}" placeholder="Saldo atual do cofre" />
+										<div class="invalid-feedback" th:errors="*{saldoAtual}"></div>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</fieldset>
+			<button th:unless="${param.somenteLeitura}" type="submit" class="btn btn-primary">Salvar</button>
+			<a class="btn btn-secondary" th:href="@{/funcionario/cofres}" role="button" th:text="${param.somenteLeitura}?'Voltar':_">Cancelar</a>
+		</form>
+		</main>
+	</th:block>
+<th:block th:fragment="jsAdicional"></th:block>
+</body>
+</html>

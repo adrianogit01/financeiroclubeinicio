@@ -1,0 +1,100 @@
+
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Usuário -->
+<title>Usuário</title>
+
+</head>
+<body>
+	<th:block th:fragment="conteudo">
+		<main role="main">
+		<h3 class="font-weight-light">Cadastro de Usuário</h3>
+	<p th:text="${usuario.id == null} ? 'Ao salvar, uma novo usuario será criada no clube.' : (${param.somenteLeitura} ? 'As informações não podem ser alteradas neste modo.' :  'Ao salvar, as informações da usuario atual serão atualizadas.')"></p>
+		<form th:action="@{/usuario/adicionar}" th:object="${usuario}" th:method="${usuario.id == null} ? post : put">
+		<!--<form th:action="@{/usuario/adicionar}" th:method="post">-->
+		 <!--<form method="POST" id="form_add">-->
+			<fieldset th:disabled="${param.somenteLeitura}" class="mb-3">
+				<input type="hidden" th:field="*{id}" />
+				<div class="card">
+					<ul class="list-group list-group-flush" id="accordion">
+						<li class="list-group-item">
+							<p class="text-primary">
+								<i class="fas fa-user"></i> Informações principais
+							</p>
+							<div class="form-row">
+								<div class="form-group col-md-6">	
+									<label>Login</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{login}" placeholder="Login do Usuário" />
+									<div class="invalid-feedback" th:errors="*{login}"></div>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Nome</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{nomecompleto}" placeholder="Nome Completo" />
+									<div class="invalid-feedback" th:errors="*{nomecompleto}"></div>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Usuário</label>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="fas fa-user"></i></span>
+										</div>
+										<input autocomplete="off" class="form-control last" type="text" th:errorclass="is-invalid" th:field="*{username}" placeholder="Escolha seu usuário" />
+										<div class="invalid-feedback" th:errors="*{username}"></div>
+									</div>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Senha</label>
+									<div class="input-group">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="fas fa-lock"></i></span>
+										</div>
+											<input type="password" class="form-control valid" name="senha" placeholder="Senha do Usuário" required></input>
+									</div>
+									<small th:if="${usuario.id != null}">Se não quiser alterar a senha, digite a sua senha atual</small>
+							   </div>
+							</div>
+						</li>
+						<li class="list-group-item">
+							<p class="text-primary">
+								<i class="fas fa-envelope"></i> Dados de contato
+							</p>
+							<div class="form-group">
+								<label>E-mail</label> <input class="form-control" type="email" th:errorclass="is-invalid" th:field="*{email}" placeholder="O e-mail do usuário" />
+								<div class="invalid-feedback" th:errors="*{email}"></div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Telefone</label> <input class="form-control" type="tel" th:errorclass="is-invalid" th:field="*{telefone}" placeholder="Telefone com DDD" />
+									<div class="invalid-feedback" th:errors="*{telefone}"></div>
+								</div>
+							</div>
+						</li>
+						<li class="list-group-item">
+							<p class="text-primary">
+								<i class="fas fa-map-marker-alt"></i> Permissão
+							</p>
+							<div class="form-row marge">
+								<div class="form-group col-md-4">
+	      							<label class="labels-inputs">Nível de Permissão</label>
+	      							<select name="permissao" class="form-control valid" required>
+	        							<option selected disabled>Escolher...</option>
+	        							<option value="ADMINISTRADOR">ADMINISTRADOR</option>
+	        							<option value="USUÁRIO">USUÁRIO</option>
+	      							</select>
+      							</div>
+    						</div>
+						</li>
+					</ul>
+				</div>
+			</fieldset>
+			<button th:unless="${param.somenteLeitura}" type="submit" class="btn btn-primary">Salvar</button>
+			<a class="btn btn-secondary" th:href="@{/usuario/users}" role="button" th:text="${param.somenteLeitura}?'Voltar':_">Cancelar</a>
+		</form>
+		</main>
+	</th:block>
+<th:block th:fragment="jsAdicional">
+<script th:src="@{/js/meu.linhas-dinamicas.js}"></script>
+</th:block>
+</body>
+</html>

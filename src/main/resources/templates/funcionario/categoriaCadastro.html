@@ -1,0 +1,94 @@
+
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<title>Categoria</title>
+
+</head>
+<body>
+	<th:block th:fragment="conteudo">
+		<main role="main">
+		<h3 class="font-weight-light">Cadastro da Categoria</h3>
+		
+		<p th:text="${categoria.idCategoria == null} ? 'Ao salvar, uma nova categoria serÃ¡ criada no clube.' : (${param.somenteLeitura} ? 'As informaÃ§Ãµes nÃ£o podem ser alteradas neste modo.' :  'Ao salvar, as informaÃ§Ãµes da categoria atual serÃ£o atualizadas.')"></p>
+		<form th:class="${#ctx.classe == ''}?'needs-validation'" novalidate th:action="@{/funcionario/{sub}categorias/cadastro/(sub=(${#ctx.classe == T(financeiroclube.entity.enums.TipoClasseCategoria).S} ? 'sub' : ''))}"  th:object="${categoria}" th:method="${categoria.idCategoria == null} ? post : put">
+			<fieldset th:disabled="${param.somenteLeitura}" class="mb-3">
+				<input th:if="${#ctx.classe == T(financeiroclube.entity.enums.TipoClasseCategoria).C}" /> <input type="hidden" th:field="*{idCategoria}" />
+				<div class="card">
+					<ul class="list-group list-group-flush" id="accordion">
+						<li class="list-group-item">
+							<p class="text-primary">
+								<i class="fas fa-list-ol"></i> Informações principais
+							</p>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Classe <a class="text-secondary" tabindex="-1" data-toggle="modal"></a></label> <select required class="custom-select" name="form-accordion-select" data-form="main form" data-parent="#accordion .collapse" autofocus th:disabled="${categoria.idCategoria != null}">
+										<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
+										<option th:each="t : ${tiposClasseCategoria}" th:value="${t}" th:text="${t.nome}" th:selected="${t == #ctx.classe}" data-toggle="collapse" th:data-target="'#'+ ${t}" th:data-form-action="@{/funcionario/{sub}categorias/cadastro/(sub=(${t == T(financeiroclube.entity.enums.TipoClasseCategoria).S} ? 'sub' : ''))}"></option>
+									</select>
+									<div class="invalid-feedback">Campo obrigatório.</div>
+									<small th:text="${categoria.idCategoria != null} ? 'Este campo nÃ£o pode ser modificado.' : _">Após salvar, este campo não poderá ser modificado.</small>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Categoria superior</label> <select class="custom-select" id="categoriaPai" th:errorclass="is-invalid" th:field="*{categoriaPai}">
+										<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
+										<option value="">(Nenhuma)</option>
+										<option th:each="c : ${categorias}" th:value="${c.idCategoria}" th:text="${c}"></option>
+									</select>
+									<div class="invalid-feedback" th:errors="*{categoriaPai}"></div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label>Descrição</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{descricao}" placeholder="Uma descrição completa" />
+								<div class="invalid-feedback" th:errors="*{descricao}"></div>
+							</div>
+						</li>
+						<li class="list-group-item collapse show" id="C" th:if="${#ctx.classe == T(financeiroclube.entity.enums.TipoClasseCategoria).C}">
+							<p class="text-primary">
+								<i class="fas fa-tasks"></i> Dados da categoria sintética
+							</p>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Ordenação</label> <input class="form-control" type="text" th:errorclass="is-invalid" th:field="*{ordem}" placeholder="Nº de sequência" />
+									<div class="invalid-feedback" th:errors="*{ordem}"></div>
+									<small>Dica: separe níveis por pontos (exemplo: 1.1.3).</small>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Tipo</label> <select class="custom-select" id="tipo" th:errorclass="is-invalid" th:field="*{tipo}">
+										<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
+										<option th:each="tipo : ${tiposCategoria}" th:value="${tipo}" th:text="${tipo.nome}" th:disabled="${categoria.idCategoria != null && categoria.tipo != tipo}"></option>
+									</select>
+									<div class="invalid-feedback" th:errors="*{tipo}"></div>
+									<small th:text="${categoria.idCategoria != null} ? 'Este campo nÃ£o pode ser modificado.' : _">Após salvar, este campo não poderá ser modificado.</small>
+								</div>
+							</div>
+						</li>
+						<li class="list-group-item collapse" id="C" th:unless="${#ctx.classe == T(financeiroclube.entity.enums.TipoClasseCategoria).C}">
+							<p class="text-primary">
+								<i class="fas fa-tasks"></i> Dados da categoria sintética
+							</p>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label>Ordenação</label> <input disabled class="form-control" type="text" name="ordem" id="ordem" placeholder="Nº de sequência" /> <small>Dica: separe níveis por pontos (exemplo: 1.1.3).</small>
+								</div>
+								<div class="form-group col-md-6">
+									<label>Tipo</label> <select disabled class="custom-select" id="tipo" name="tipo">
+										<option th:unless="${param.somenteLeitura}" value="" hidden="true">Selecione</option>
+										<option th:each="tipo : ${tiposCategoria}" th:value="${tipo}" th:text="${tipo.nome}"></option>
+									</select>
+									<small th:text="${categoria.idCategoria != null} ? 'Este campo não pode ser modificado.' : _">Após salvar, este campo não poderá ser modificado.</small>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</fieldset>
+			<button th:unless="${param.somenteLeitura}" type="submit" class="btn btn-primary">Salvar</button>
+			<a class="btn btn-secondary" th:href="@{/funcionario/categorias}" role="button" th:text="${param.somenteLeitura}?'Voltar':_">Cancelar</a>
+		</form>
+		</main>
+	</th:block>
+<th:block th:fragment="jsAdicional"></th:block>
+</body>
+</html>

@@ -1,0 +1,125 @@
+
+<!doctype html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<title>Financeiro Clube</title>
+
+</head>
+<body>
+	<th:block th:fragment="conteudo">
+		<main role="main">
+		<h3 class="font-weight-light">Visão Geral do Clube</h3>
+		<div class="row mt-3">
+			<div class="col-md-6 col-sm-6 mb-4 order-sm-2">
+				<div class="card" th:classappend="${saldoAtual}<0?'border-danger':'border-success'">
+					<div class="card-body order-1" th:classappend="${saldoAtual}<0?'text-danger':'text-success'">
+						<h5 class="card-title text-truncate">Total de saldo</h5>
+						<p class="card-text text-truncate">
+							<span th:text="'R$ ' + ${saldoAtual}"></span> <a class="float-right" th:classappend="${saldoAtual}<0?'text-danger':'text-success'" th:href="@{/funcionario/cofres}" title="Cadastro de Cofres"><i class="fas fa-arrow-circle-right"></i></a>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-6 mb-4 order-3 order-sm-3">
+				<div class="card" th:classappend="${atraso}>0?'border-danger':'border-success'">
+					<div class="card-body" th:classappend="${atraso}>0?'text-danger':'text-success'">
+						<h5 class="card-title text-truncate">Atrasos</h5>
+						<p class="card-text text-truncate">
+							<span th:text="'R$ ' + ${atraso}"></span> <a class="float-right" th:classappend="${atraso}>0?'text-danger':'text-success'" th:href="@{/funcionario/relatorios/atraso}" title="Atrasos"><i class="fas fa-arrow-circle-right"></i></a>
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12 mb-4 order-2 order-sm-1">
+				<div class="card border-black">
+					<!--<div class="card-header">Lançamentos no Mês</div>-->
+					<div class="card-header">Receitas e Despesas no Mês</div>
+					<div class="card-body ">
+						<canvas id="resumoMensal" style="max-height: 200px"></canvas>
+					</div>
+				</div>
+			</div>
+		</div>
+		</main>
+	</th:block>
+	<th:block th:fragment="jsAdicional">
+		<script th:src="@{/js/Chart.min.js}"></script>
+		<script th:src="@{/js/chartjs-plugin-datalabels.min.js}"></script>
+		<script th:src="@{/js/chartjs-plugin-deferred.min.js}"></script>
+		<script th:inline="javascript">
+			new Chart(document.getElementById("resumoMensal"), {
+				type : 'bar',
+				data : {
+					labels : [ 'Receitas', 'Despesas' ],
+					datasets : [ {
+						data : [[${receitaDespesaMes}]],
+						label : 'Total (R$)',
+						backgroundColor : [ 'rgba(75, 192, 192, 0.5)',
+								'rgba(255, 99, 132, 0.5)' ],
+						borderColor : [ 'rgba(75, 192, 192, 1)',
+								'rgba(255,99,132,1)' ],
+						borderWidth : 1
+					} ]
+				},
+				options : {
+					maintainAspectRatio : false,
+					animation : {
+						duration : 2000
+					},
+					layout:{
+						padding:{
+							right: 70
+						}
+					},
+					tooltips:{
+						enabled: false
+					},
+					plugins: {
+			            datalabels: {
+							anchor: 'end',
+							align: 'right',
+							formatter: function(value, context) {
+							    return 'R$ ' + value.toFixed(2);
+							}
+						},
+						deferred: {
+					        yOffset: '50%'
+					    }
+					},
+					scales : {
+						xAxes : [ {
+							display : true,
+							ticks : {
+								display : false,
+								beginAtZero : true,
+								callback : function(value, index, values) {
+									return 'R$ ' + value;
+								}
+							},
+							gridLines : {
+								display : false,
+								drawBorder : false
+							}
+						} ],
+						yAxes : [ {
+							display : true,
+							ticks : {
+								display : true
+							},
+							gridLines : {
+								display : false,
+								drawBorder : true
+							}
+						} ]
+					},
+					legend : {
+						display : false
+					}
+				}
+			});
+		</script>
+
+	</th:block>
+</body>
+</html>
