@@ -109,4 +109,19 @@ public class CofreServiceImpl implements CofreService {
 			return cofreRepository.sumSaldoAtual();
 	}
 
+	@Override
+	public void decreaseSaldo(Cofre entidade, BigDecimal valor) {
+		 entidade.setSaldoAtual(entidade.getSaldoAtual().subtract(valor));
+	        cofreRepository.save(entidade);
+		
+	}
+
+	@Override
+	public void increaseSaldo(Cofre entidade, BigDecimal valor) {
+		entidade.setSaldoAtual(entidade.getSaldoAtual().add(valor));
+        cofreRepository.save(entidade);
+		
+	}
+
+
 }

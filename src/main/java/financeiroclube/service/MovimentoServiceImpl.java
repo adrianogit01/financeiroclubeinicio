@@ -45,8 +45,10 @@ public class MovimentoServiceImpl implements MovimentoService {
 				((Movimento) entidade).setPeriodo(periodoService.ler(entidade.getData()));
 				if (((Movimento) entidade).getSubcategoria().getCategoriaPai().getTipo().equals(TipoCategoria.D)) {
 					entidade.setReducao(Boolean.TRUE);
+					cofreService.decreaseSaldo(entidade.getCofre(), entidade.getValor());
 				} else {
 					entidade.setReducao(Boolean.FALSE);
+					cofreService.increaseSaldo(entidade.getCofre(), entidade.getValor());
 				}
 			} 
 			listaSalvar.add(entidade);
@@ -90,6 +92,16 @@ public class MovimentoServiceImpl implements MovimentoService {
 	@Override
 	public void excluir(Movimento entidade) {
 		List<Movimento> listaDeletar = new ArrayList<>();
+		if (entidade instanceof Movimento) {
+			((Movimento) entidade).setPeriodo(periodoService.ler(entidade.getData()));
+			if (((Movimento) entidade).getSubcategoria().getCategoriaPai().getTipo().equals(TipoCategoria.D)) {
+				entidade.setReducao(Boolean.TRUE);
+				cofreService.increaseSaldo(entidade.getCofre(), entidade.getValor());
+			} else {
+				entidade.setReducao(Boolean.FALSE);
+				cofreService.decreaseSaldo(entidade.getCofre(), entidade.getValor());
+			}
+		}		  	
 		listaDeletar.add(entidade);
 		movimentoRepository.deleteAll(listaDeletar);
 	}
