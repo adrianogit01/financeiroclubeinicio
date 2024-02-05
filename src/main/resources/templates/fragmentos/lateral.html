@@ -6,9 +6,9 @@
 		<nav id="sidebar" class="bg-primary navbar-dark active d-print-none">
 			<div id="sidebarExpand" class="bg-primary mt-2 mb-2 text-center d-none d-md-block"><i class="fas fa-exchange-alt"></i></div>
 			<ul class="list-unstyled navbar-nav">
-				<li class="nav-item"><a class="nav-link" href="/funcionario/geral" title="Visão Geral"> <i class="fab fas fa-chart-pie"></i> Visão Geral
+				<li class="nav-item"><a class="nav-link" th:href="@{/}" title="Visão Geral"> <i class="fab fas fa-chart-pie"></i> Visão Geral
 				</a></li>
-				<li class="nav-item"><a class="nav-link" href="/usuario/users" title="Cadastro de Usuários"><i class="fa fa-users"></i>Usuários</a></li>
+				<li class="nav-item"><a class="nav-link" href="/funcionario/usuario/users" title="Cadastro de Usuários"><i class="fa fa-users"></i>Usuários</a></li>
 				<li class="nav-item"><a class="nav-link" href="#financasSubmenu" data-toggle="collapse" title="Caixas e Pendencias"> <i class="far fa-money-bill-alt"></i> Caixas e Pendencias
 				</a>
 					<ul class="collapse list-unstyled" id="financasSubmenu">
@@ -20,6 +20,7 @@
 					<ul class="collapse list-unstyled" id="contabilidadeSubmenu">
 						<li><a class="nav-link" href="/funcionario/categorias" title="Cadastro de Categorias e Subcategorias">Categorias</a></li>
 						<li><a class="nav-link" href="/funcionario/periodos" title="Cadastro de Períodos">Períodos</a></li>
+						<li><a class="nav-link" href="/funcionario/fornecedores" title="Cadastro de Fornecedores">Fornecedores</a></li>
 						<li><a class="nav-link" href="/funcionario/movimentos" title="Cadastro de Movimentos">Movimentos</a></li>
 					</ul></li>
 				<li class="nav-item"><a class="nav-link" href="/funcionario/relatorios" title="Relatórios"> <i class="fas fa-file-alt"></i> Relatórios
@@ -27,6 +28,7 @@
 			</ul>
 		</nav>
 		<div id="sidebarCollapse" class="bg-primary text-light active d-md-none"></div>
+<div class="bottom-gradient"></div>
 	</th:block>
 </body>
 </html>

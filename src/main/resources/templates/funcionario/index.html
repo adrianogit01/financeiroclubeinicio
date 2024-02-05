@@ -9,14 +9,19 @@
 <body>
 	<th:block th:fragment="conteudo">
 		<main role="main">
+			<h1 class="display-4">Olá!</h1>
+			<p class="lead">Bem vindo ao Controle Financeiro do Clube dos 30!</p>
 		<h3 class="font-weight-light">Visão Geral do Clube</h3>
 		<div class="row mt-3">
 			<div class="col-md-6 col-sm-6 mb-4 order-sm-2">
-				<div class="card" th:classappend="${saldoAtual}<0?'border-danger':'border-success'">
-					<div class="card-body order-1" th:classappend="${saldoAtual}<0?'text-danger':'text-success'">
+				<div class="card" th:classappend="${saldoAtual < 0 || saldoAtual == null ? 'border-danger' : 'border-success'}">
+    				<div class="card-body order-1" th:classappend="${saldoAtual < 0 || saldoAtual == null ? 'text-danger' : 'text-success'}">
+					<!--<div class="card">
+					<div class="card-body order-1">-->
 						<h5 class="card-title text-truncate">Total de saldo</h5>
 						<p class="card-text text-truncate">
-							<span th:text="'R$ ' + ${saldoAtual}"></span> <a class="float-right" th:classappend="${saldoAtual}<0?'text-danger':'text-success'" th:href="@{/funcionario/cofres}" title="Cadastro de Cofres"><i class="fas fa-arrow-circle-right"></i></a>
+							<span th:text="'R$ ' + ${saldoAtual}"></span> <a class="float-right" th:classappend="${saldoAtual < 0 || saldoAtual == null?'text-danger':'text-success'}" th:href="@{/funcionario/cofres}" title="Cadastro de Cofres"><i class="fas fa-arrow-circle-right"></i></a>
+						<!--<span th:text="'R$ ' + ${saldoAtual}"></span> <a class="float-right" th:href="@{/funcionario/cofres}" title="Cadastro de Cofres"><i class="fas fa-arrow-circle-right"></i></a>-->
 						</p>
 					</div>
 				</div>
@@ -33,7 +38,6 @@
 			</div>
 			<div class="col-md-12 mb-4 order-2 order-sm-1">
 				<div class="card border-black">
-					<!--<div class="card-header">Lançamentos no Mês</div>-->
 					<div class="card-header">Receitas e Despesas no Mês</div>
 					<div class="card-body ">
 						<canvas id="resumoMensal" style="max-height: 200px"></canvas>
