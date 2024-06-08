@@ -76,17 +76,26 @@ public class MovimentoServiceImpl implements MovimentoService {
 	@Override
 	public void editar(Movimento entidade) {
 		padronizar(entidade);
-		List<Movimento> listaSalvar = new ArrayList<>();
-		if (entidade instanceof Movimento) {
-			((Movimento) entidade).setPeriodo(periodoService.ler(entidade.getData()));
-			if (((Movimento) entidade).getSubcategoria().getCategoriaPai().getTipo().equals(TipoCategoria.D)) {
-				entidade.setReducao(Boolean.TRUE);
-			} else {
-				entidade.setReducao(Boolean.FALSE);
-			}
-		}
-		listaSalvar.add(entidade);
-		movimentoRepository.saveAll(listaSalvar);
+	    Movimento movimentoAntigo = movimentoRepository.findById(entidade.getIdMovimento()).orElse(null);
+	    if (movimentoAntigo != null) {
+	        // Atualizando saldo com valores antigos
+	        if (movimentoAntigo.getReducao()) {
+	            cofreService.increaseSaldo(movimentoAntigo.getCofre(), movimentoAntigo.getValor());
+	        } else {
+	            cofreService.decreaseSaldo(movimentoAntigo.getCofre(), movimentoAntigo.getValor());
+	        }
+	    }
+
+	    // Ajustando o saldo com os novos valores
+	    if (entidade.getSubcategoria().getCategoriaPai().getTipo().equals(TipoCategoria.D)) {
+	        entidade.setReducao(Boolean.TRUE);
+	        cofreService.decreaseSaldo(entidade.getCofre(), entidade.getValor());
+	    } else {
+	        entidade.setReducao(Boolean.FALSE);
+	        cofreService.increaseSaldo(entidade.getCofre(), entidade.getValor());
+	    }
+
+	    movimentoRepository.save(entidade);
 	}
 
 	@Override
