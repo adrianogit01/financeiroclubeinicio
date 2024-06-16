@@ -62,7 +62,7 @@ public class PendenciaController {
 	@ModelAttribute("usuarios")
 	public List<Usuario> usuarios() {
 		//return usuarioService.listar();
-		return usuarioService.listaUsuarios();
+		return usuarioService.listar();
 	}
 
 	@GetMapping({ "", "/", "/lista" })

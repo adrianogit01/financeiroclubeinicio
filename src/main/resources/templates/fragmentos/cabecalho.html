@@ -6,16 +6,16 @@
 		<header>
 			<nav id="navbarTop" class="navbar navbar-expand-md navbar-dark fixed-top bg-primary d-print-none">
 				
-					<a class="navbar-brand" th:href="@{/}"> <i class="far fas fa-futbol fa-lg fa-fw"></i>Financeiro Clube
-					</a>
+					<div href="/"><img src="/img/logo30.svg"><!--<i class="far fas fa-futbol fa-lg fa-fw"></i>--> Controle Financeiro
+					</div>
+					<!--<a class="navbar-brand" th:href="@{/}"><img src="/img/logo30.svg"><i class="far fas fa-futbol fa-lg fa-fw"></i> Controle Financeiro
+					</a>-->
 					<button class="navbar-toggler" type="button" data-toggle="collapse" id="navbarToggler" data-target="#navbarCollapse">
 						<span class="navbar-toggler-icon"></span>
 					</button>
 					<div class="collapse navbar-collapse" id="navbarCollapse">
 						<ul class="navbar-nav mr-auto">
 					 <a class="dropdown-item" href="/">Início</a>
-						<!--<li class="nav-item"><a th:classappend="${ativo[0] == 'inicio'}? 'active'" class="nav-link" th:href="@{/}">Início</a></li>-->
-							<!--<li class="nav-item"><a th:classappend="${ativo[0] == 'conta'}? 'active'" class="nav-link" th:href="@{/conta/cadastrar}">Registrar</a></li>-->
 						</ul>
 						<!--<div sec:authorize="isAnonymous()">
 							<form class="form-inline mt-2 mt-md-0" th:action="@{/entrar}" method="get">
@@ -27,20 +27,14 @@
 								<div class="btn-group">
 									<button class="btn btn-outline-light my-2 my-sm-0" type="submit">Sair</button>
 									<!--<a class="dropdown-item" href="/logout">Sair</a>-->
-									<!--<button type="button" class="btn btn-outline-light dropdown-toggle dropdown-toggle-split  my-2 my-sm-0" data-toggle="dropdown"></button>
-									<div class="dropdown-menu dropdown-menu-md-right">
-										<a sec:authorize="hasAuthority('FUNCIONARIO')" class="dropdown-item" th:href="@{/funcionario}">Visão Geral do Clube</a>
-										<a sec:authorize="hasAuthority('SOCIO')" class="dropdown-item" th:href="@{/socio}">Visão Geral do Clube (Sócio)</a>
-										<a sec:authorize="hasAuthority('ADMIN')" class="dropdown-item" th:href="@{/admin}">Visão Geral do Administrador</a>
-										<a class="dropdown-item" th:href="@{/conta/cadastro}">Meu Cadastro</a>
-										<div class="dropdown-divider"></div>
-										<button class="dropdown-item" type="submit">Sair <i class="fas fa-sign-out-alt ml-3"></i></button>-->
+							
 									</div>
 								</div>
 							</form>
+
 						</div>
 					</div>
-				
+				<div class="bottom-gradient"></div>
 			</nav>
 		</header>
 	</th:block>

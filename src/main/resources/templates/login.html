@@ -1,13 +1,28 @@
 
 <!doctype html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
+<!-- Meta tags -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
+
+<meta name="application-name" content="Financeiro Clube" />
+<meta name="msapplication-config" th:content="@{/misc/ieconfig.xml}" />
+<meta name="theme-color" content="#04cf8e">
+<link rel="manifest" th:href="@{/misc/manifest.json}">
+<link rel="apple-touch-icon" th:href="@{/misc/icon-192x192.png}">
+
+<!-- CSS -->
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/css/fontawesome-all.min.css}" />
+<link rel="stylesheet" th:href="@{/css/scroll.min.css}" />
+<link rel="stylesheet" th:href="@{/css/novo.css}" />
 <title>Entrar</title>
 
 </head>
 <body>
-	<th:block th:fragment="conteudo">
+	<th:block th:replace="fragmentos/cabecalho :: cabecalho" />
 		<main role="main" class="container">
 		<div class="m-auto" style="max-width: 350px;">
 			<h3 class="font-weight-light mb-3">Entrar</h3>
@@ -26,18 +41,17 @@
 			<div th:if="${param.novo}">
 				<div class="alert alert-success">Sua conta foi criada, obrigado!</div>
 			</div>
-			<!-- NÃO ESQUECER DE TROCAR ESSA ACTION AO MUDAR O MAPEAMENTO TAMBÉM /funcionario/usuario/logar -->
-			<form th:action="@{/usuario/logar}" th:method="post" class="needs-validation" autocomplete="off" novalidate>
+			<form th:action="@{/funcionario/usuario/logar}" th:method="post" class="needs-validation" autocomplete="off" novalidate>
 				<div class="card">
 					<ul class="list-group list-group-flush">
 						<li class="list-group-item">
 							<div class="form-group">
-								<label>Usuário</label>
+								<label>Login</label>
 								<div class="input-group">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="fas fa-user"></i></span>
 									</div>
-									<input class="form-control last" type="text" name="username" placeholder="Seu usuário" autofocus="autofocus" required />
+									<input class="form-control last" type="text" name="username" placeholder="Seu login" autofocus="autofocus" required />
 									<div class="invalid-feedback">Campo obrigatório</div>
 								</div>
 							</div>
@@ -67,7 +81,13 @@
 			</p>-->
 		</div>
 		</main>
-	</th:block>
+        <th:block th:replace="fragmentos/rodape :: rodape" />
+
+	<!-- JavaScript -->
+	<script th:src="@{/js/jquery.min.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/novo.js}"></script>
 <th:block th:fragment="jsAdicional"></th:block>
 </body>
 </html>

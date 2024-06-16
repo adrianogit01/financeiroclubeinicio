@@ -21,22 +21,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception{
 		http.csrf().disable().
 			authorizeRequests()
-				.antMatchers(HttpMethod.GET, "/").hasAnyRole("ADMIN","USER")
+                .antMatchers("/css/**", "/img/**", "/js/**").permitAll()
+				//.antMatchers(HttpMethod.GET, "/").hasAnyRole("ADMIN","USER")
 				//.antMatchers("/funcionario/**").hasAnyRole("ADMIN","USER")
 				//.antMatchers("/socio/**").hasAuthority("SOCIO")
 				//.antMatchers("/admin/**").hasAuthority("ADMIN")
-				.antMatchers(HttpMethod.GET,"/funcionario/cofres/cadastro").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET,"/funcionario/movimentos/cadastro").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET,"/funcionario/{idMovimento}/cadastro").hasRole("ADMIN")
-				.antMatchers(HttpMethod.GET,"/deletar/{id}").hasRole("ADMIN")
-				.antMatchers(HttpMethod.GET,"/atualizar/{id}").hasRole("ADMIN")
-				.antMatchers(HttpMethod.GET,"/usuario/users").hasRole("ADMIN")
-				.antMatchers(HttpMethod.POST,"/usuario/adicionar").hasRole("ADMIN")
-				.antMatchers(HttpMethod.GET,"/usuario/getusuario/{id}").hasRole("ADMIN")
+                //.antMatchers(HttpMethod.GET,"/funcionario/cofres/cadastro").hasRole("ADMIN")
+				.antMatchers("/funcionario/cofres/cadastro").hasRole("ADMIN")
+                .antMatchers("/funcionario/movimentos/cadastro").hasRole("ADMIN")
+                .antMatchers("/funcionario/{idMovimento}/cadastro").hasRole("ADMIN")
+				.antMatchers("/deletar/{id}").hasRole("ADMIN")
+				.antMatchers("/atualizar/{id}").hasRole("ADMIN")
+				//.antMatchers("/funcionario/usuario").hasRole("ADMIN")
+				.antMatchers("/funcionario/usuario/adicionar").hasRole("ADMIN")
+				.antMatchers("/funcionario/usuario/getusuario/{id}").hasRole("ADMIN")
+				//.antMatchers(HttpMethod.GET,"/funcionario/relatorios/atraso").hasRole("ADMIN")
 				.anyRequest().authenticated()
-				.and().formLogin().loginPage("/usuario/logar").defaultSuccessUrl("/",true)
-				.failureUrl("/usuario/logar").permitAll()
-				.and().logout().logoutUrl("/logout").logoutSuccessUrl("/usuario/logar").permitAll();
+				.and().formLogin().loginPage("/funcionario/usuario/logar").defaultSuccessUrl("/",true)
+				.failureUrl("/funcionario/usuario/logar").permitAll()
+				.and().logout().logoutUrl("/logout").logoutSuccessUrl("/funcionario/usuario/logar").permitAll();
 	}
 	
 	@Override
@@ -44,8 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder ());
 	}	
 
-	@Override
+	/*@Override
 	public void configure(WebSecurity web) throws Exception{
 		web.ignoring().antMatchers("/css/**", "/img/**", "/js/**");
-	}
+	}*/
 }

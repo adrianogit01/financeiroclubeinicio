@@ -2,6 +2,7 @@ package financeiroclube.controller;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import financeiroclube.entity.Usuario;
 import financeiroclube.service.UsuarioService;
 
 @Controller
-@RequestMapping("/usuario")
+@RequestMapping("funcionario/usuario")
 public class UsuarioController {
 
 	@Autowired
@@ -35,15 +36,16 @@ public class UsuarioController {
 		return new String[] { "usuarios" };
 	}
 
-	@GetMapping({ "", "/", "/users" })
+	@GetMapping({ "", "/", "/lista" })
 	public ModelAndView getUsuarios(@RequestParam("pagina") Optional<Integer> pagina,
 			@RequestParam("tamanho") Optional<Integer> tamanho, ModelMap model) {
 		model.addAttribute("usuarios",
-				usuarioService.listaUsuarios());
-		model.addAttribute("conteudo", "usuarioLista");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+				usuarioService.listarPagina(PageRequest.of(pagina.orElse(1) - 1, tamanho.orElse(20))));
+				model.addAttribute("conteudo", "usuarioLista");
+				return new ModelAndView("fragmentos/layoutFuncionario", model);
 	}
 
+	//Responsável pelo modal de cadastrar.
 	@GetMapping("/adicionar")
 	public ModelAndView getUsuarioCadastro(@ModelAttribute("usuario") Usuario usuario, ModelMap model) {
 		model.addAttribute("tipo", "");
@@ -54,9 +56,11 @@ public class UsuarioController {
 
 	@GetMapping("/editusuario/{id}")
 	public ModelAndView getUsuarioEditar(@PathVariable("id") Long id, ModelMap model) {
-		Usuario usuario = usuarioService.retornaUser(id);
+		Usuario usuario = usuarioService.ler(id);
+		//usuarioService.buscarPorLogin(usuario.getLogin());
 			model.addAttribute("usuario", usuario);
-			model.addAttribute("conteudo", "usuarioCadastro");
+			
+	model.addAttribute("conteudo", "usuarioCadastro");
 		return new ModelAndView("fragmentos/layoutFuncionario", model);
 	}
 
@@ -64,28 +68,55 @@ public class UsuarioController {
 	public ModelAndView postUsuarioCadastro(@Valid @ModelAttribute("usuario") Usuario usuario,
 			ModelMap model) {
 				
-		usuarioService.adicionarUsuario(usuario);
-		return new ModelAndView("redirect:/usuario/users");
+		usuarioService.salvar(usuario);
+		return new ModelAndView("redirect:/funcionario/usuario");
 	}
 
 	@PutMapping(value = "/adicionar")
 	public ModelAndView putUsuarioCadastro(@Valid @ModelAttribute("usuario") Usuario usuario,
 			ModelMap model) {
-		usuarioService.atualizarUsuario(usuario);
-		return new ModelAndView("redirect:/usuario/users");
+		usuarioService.editar(usuario);
+		return new ModelAndView("redirect:/funcionario/usuario");
+	}
+	
+	/*@PostMapping(value = "/adicionar")
+	public ModelAndView postUsuarioCadastro(@Valid @ModelAttribute("usuario") Usuario usuario,
+			ModelMap model, BindingResult validacao) {
+		usuarioService.validar(usuario, validacao);		
+		usuarioService.salvar(usuario);
+		if (validacao.hasErrors()) {
+			usuario.setId(null);
+			return new ModelAndView("fragmentos/layoutFuncionario", "conteudo", "usuarioCadastro");
+		}
+		return new ModelAndView("redirect:/funcionario/usuario");
 	}
 
+	@PutMapping(value = "/adicionar")
+	public ModelAndView putUsuarioCadastro(@Valid @ModelAttribute("usuario") Usuario usuario,
+			ModelMap model, BindingResult validacao) {
+		if (validacao.hasErrors()) {
+			return new ModelAndView("fragmentos/layoutFuncionario", "conteudo", "usuarioCadastro");
+		}
+		usuarioService.editar(usuario);
+		return new ModelAndView("redirect:/funcionario/usuario");
+	}*/
 	
+	
+
+	
+	   //também compatibilizado
 	@DeleteMapping(value="/deletar/{id}")
 		public ModelAndView deletarUsuario(@RequestParam("idObj") Long idObj) {
-			usuarioService.removerUsuario(idObj);
-			return new ModelAndView("redirect:/usuario/users");
+			usuarioService.excluir(usuarioService.ler(idObj));
+			return new ModelAndView("redirect:/funcionario/usuario");
 	}
 	
-	@RequestMapping("/logar" )
+	
+	@RequestMapping("/logar")
 	public ModelAndView logar() {
-		ModelAndView mv = new ModelAndView("fragmentos/layoutSite", "conteudo", "login");
+		ModelAndView mv = new ModelAndView("login");
 		return mv;
 	}
+	
 
 }
