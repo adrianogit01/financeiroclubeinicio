@@ -40,19 +40,19 @@ public class PeriodoController {
 		model.addAttribute("periodos",
 				periodoService.listarPagina(PageRequest.of(pagina.orElse(1) - 1, tamanho.orElse(20))));
 		model.addAttribute("conteudo", "periodoLista");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@GetMapping("/cadastro")
 	public ModelAndView getPeriodoCadastro(@ModelAttribute("periodo") Periodo periodo) {
-		return new ModelAndView("fragmentos/layoutFuncionario", "conteudo", "periodoCadastro");
+		return new ModelAndView("fragmentos/layout", "conteudo", "periodoCadastro");
 	}
 
 	@GetMapping("/{idPeriodo}/cadastro")
 	public ModelAndView getPeriodoEditar(@PathVariable("idPeriodo") Long idPeriodo, ModelMap model) {
 		model.addAttribute("periodo", periodoService.ler(idPeriodo));
 		model.addAttribute("conteudo", "periodoCadastro");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@PostMapping("/cadastro")
@@ -61,7 +61,7 @@ public class PeriodoController {
 		periodoService.validar(periodo, validacao);
 		if (validacao.hasErrors()) {
 			periodo.setIdPeriodo(null);
-			return new ModelAndView("fragmentos/layoutFuncionario", "conteudo", "periodoCadastro");
+			return new ModelAndView("fragmentos/layout", "conteudo", "periodoCadastro");
 		}
 		periodoService.salvar(periodo);
 		return new ModelAndView("redirect:/funcionario/periodos");
@@ -71,7 +71,7 @@ public class PeriodoController {
 	public ModelAndView putPeriodoCadastro(@Valid @ModelAttribute("periodo") Periodo periodo, BindingResult validacao) {
 		periodoService.validar(periodo, validacao);
 		if (validacao.hasErrors()) {
-			return new ModelAndView("fragmentos/layoutFuncionario", "conteudo", "periodoCadastro");
+			return new ModelAndView("fragmentos/layout", "conteudo", "periodoCadastro");
 		}
 		periodoService.editar(periodo);
 		return new ModelAndView("redirect:/funcionario/periodos");

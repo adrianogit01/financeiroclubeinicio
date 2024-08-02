@@ -41,14 +41,14 @@ public class FornecedorController {
 		model.addAttribute("fornecedores",
 				fornecedorService.listarPagina(PageRequest.of(pagina.orElse(1) - 1, tamanho.orElse(20))));
 		model.addAttribute("conteudo", "fornecedorLista");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@GetMapping("/cadastro")
 	public ModelAndView getFornecedorCadastro(@ModelAttribute("fornecedor") Fornecedor fornecedor, ModelMap model) {
 		model.addAttribute("tipo", "");
 		model.addAttribute("conteudo", "fornecedorCadastro");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@GetMapping("/{idFornecedor}/cadastro")
@@ -58,7 +58,7 @@ public class FornecedorController {
 			model.addAttribute("fornecedor", fornecedor);
 			
 	model.addAttribute("conteudo", "fornecedorCadastro");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@PostMapping(value = "/cadastro")
@@ -68,7 +68,7 @@ public class FornecedorController {
 		if (validacao.hasErrors()) {
 			fornecedor.setIdFornecedor(null);
 			model.addAttribute("conteudo", "fornecedorCadastro");
-			return new ModelAndView("fragmentos/layoutFuncionario", model);
+			return new ModelAndView("fragmentos/layout", model);
 		}
 		fornecedorService.salvar(fornecedor);
 		return new ModelAndView("redirect:/funcionario/fornecedores");
@@ -80,7 +80,7 @@ public class FornecedorController {
 		fornecedorService.validar(fornecedor, validacao);
 		if (validacao.hasErrors()) {
 			model.addAttribute("conteudo", "fornecedorCadastro");
-			return new ModelAndView("fragmentos/layoutFuncionario", model);
+			return new ModelAndView("fragmentos/layout", model);
 		}
 		fornecedorService.editar(fornecedor);
 		return new ModelAndView("redirect:/funcionario/fornecedores");

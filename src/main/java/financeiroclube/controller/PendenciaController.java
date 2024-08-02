@@ -71,21 +71,21 @@ public class PendenciaController {
 		model.addAttribute("pendencias",
 				pendenciaService.listarPagina(PageRequest.of(pagina.orElse(1) - 1, tamanho.orElse(20))));
 		model.addAttribute("conteudo", "pendenciaLista");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@GetMapping("/cadastro")
 	public ModelAndView getPendenciaCadastro(@ModelAttribute("pendencia") Pendencia pendencia) {
 		pendencia.setDataEmissao(LocalDate.now());
 		pendencia.setMotivoEmissao(MotivoEmissao.O);
-		return new ModelAndView("fragmentos/layoutFuncionario", "conteudo", "pendenciaCadastro");
+		return new ModelAndView("fragmentos/layout", "conteudo", "pendenciaCadastro");
 	}
 
 	@GetMapping("/{idPendencia}/cadastro")
 	public ModelAndView getPendenciaEditar(@PathVariable("idPendencia") Long idPendencia, ModelMap model) {
 		model.addAttribute("pendencia", pendenciaService.ler(idPendencia));
 		model.addAttribute("conteudo", "pendenciaCadastro");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@PostMapping("/cadastro")
@@ -94,7 +94,7 @@ public class PendenciaController {
 		pendenciaService.validar(pendencia, validacao);
 		if (validacao.hasErrors()) {
 			pendencia.setIdPendencia(null);
-			return new ModelAndView("fragmentos/layoutFuncionario", "conteudo", "pendenciaCadastro");
+			return new ModelAndView("fragmentos/layout", "conteudo", "pendenciaCadastro");
 		}
 		pendenciaService.salvar(pendencia);
 		return new ModelAndView("redirect:/funcionario/pendencias");
@@ -105,7 +105,7 @@ public class PendenciaController {
 			BindingResult validacao) {
 		pendenciaService.validar(pendencia, validacao);
 		if (validacao.hasErrors()) {
-			return new ModelAndView("fragmentos/layoutFuncionario", "conteudo", "pendenciaCadastro");
+			return new ModelAndView("fragmentos/layout", "conteudo", "pendenciaCadastro");
 		}
 		pendenciaService.editar(pendencia);
 		return new ModelAndView("redirect:/funcionario/pendencias");

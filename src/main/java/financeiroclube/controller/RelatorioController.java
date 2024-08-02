@@ -45,12 +45,12 @@ public class RelatorioController {
 
 	@GetMapping({ "/", "", "/lista", "/todos" })
 	public ModelAndView inicio() {
-		return new ModelAndView("fragmentos/layoutFuncionario", "conteudo", "relatorioLista");
+		return new ModelAndView("fragmentos/layout", "conteudo", "relatorioLista");
 	}
 
 	@GetMapping("/livroCaixa")
 	public ModelAndView getLivroCaixa() {
-		return new ModelAndView("fragmentos/layoutFuncionario", "conteudo", "relatorioLivroCaixa");
+		return new ModelAndView("fragmentos/layout", "conteudo", "relatorioLivroCaixa");
 	}
 
 	@PostMapping("/livroCaixa")
@@ -61,7 +61,7 @@ public class RelatorioController {
 		if (inicio.isAfter(fim)) {
 			model.addAttribute("fimInvalido", "true");
 			model.addAttribute("conteudo", "relatorioLivroCaixa");
-			return new ModelAndView("fragmentos/layoutFuncionario", model);
+			return new ModelAndView("fragmentos/layout", model);
 		}
 
 		BigDecimal saldoInicial = relatorioService.saldoInicialTodosCofresEm(inicio);
@@ -78,7 +78,7 @@ public class RelatorioController {
 
 	@GetMapping("/balancete")
 	public ModelAndView getBalancete() {
-		return new ModelAndView("fragmentos/layoutFuncionario", "conteudo", "relatorioBalancete");
+		return new ModelAndView("fragmentos/layout", "conteudo", "relatorioBalancete");
 	}
 
 	@PostMapping("/balancete")
@@ -89,7 +89,7 @@ public class RelatorioController {
 		if (inicio.isAfter(fim)) {
 			model.addAttribute("fimInvalido", "true");
 			model.addAttribute("conteudo", "relatorioBalancete");
-			return new ModelAndView("fragmentos/layoutFuncionario", model);
+			return new ModelAndView("fragmentos/layout", model);
 		}
 
 		model.addAttribute("inicio", inicio);
@@ -103,7 +103,7 @@ public class RelatorioController {
 
 	@GetMapping("/atraso")
 	public ModelAndView getAtraso() {
-		return new ModelAndView("fragmentos/layoutFuncionario", "conteudo", "relatorioAtraso");
+		return new ModelAndView("fragmentos/layout", "conteudo", "relatorioAtraso");
 	}
 
 	@PostMapping("/atraso")

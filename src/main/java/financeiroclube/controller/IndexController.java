@@ -45,7 +45,7 @@ public class IndexController {
 		model.addAttribute("receitaDespesaMes", relatorioService.receitaDespesaMesAtual());
 		
 		model.addAttribute("conteudo", "index");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 }

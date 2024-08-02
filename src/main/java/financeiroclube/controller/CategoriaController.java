@@ -58,14 +58,14 @@ public class CategoriaController {
 	public ModelAndView getCategorias(ModelMap model) {
 		model.addAttribute("contagemSubcategorias", subcategoriaService.contagem());
 		model.addAttribute("conteudo", "categoriaLista");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@GetMapping("/cadastro")
 	public ModelAndView getCategoriaCadastro(@ModelAttribute("categoria") Categoria categoria, ModelMap model) {
 		model.addAttribute("classe", "");
 		model.addAttribute("conteudo", "categoriaCadastro");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@GetMapping("/{idCategoria}/cadastro")
@@ -73,7 +73,7 @@ public class CategoriaController {
 		model.addAttribute("classe", TipoClasseCategoria.C);
 		model.addAttribute("categoria", categoriaService.ler(idCategoria));
 		model.addAttribute("conteudo", "categoriaCadastro");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@PostMapping("/cadastro")
@@ -84,7 +84,7 @@ public class CategoriaController {
 			categoria.setIdCategoria(null);
 			model.addAttribute("classe", TipoClasseCategoria.C);
 			model.addAttribute("conteudo", "categoriaCadastro");
-			return new ModelAndView("fragmentos/layoutFuncionario", model);
+			return new ModelAndView("fragmentos/layout", model);
 		}
 		categoriaService.salvar(categoria);
 		return new ModelAndView("redirect:/funcionario/categorias");
@@ -97,7 +97,7 @@ public class CategoriaController {
 		if (validacao.hasErrors()) {
 			model.addAttribute("classe", TipoClasseCategoria.C);
 			model.addAttribute("conteudo", "categoriaCadastro");
-			return new ModelAndView("fragmentos/layoutFuncionario", model);
+			return new ModelAndView("fragmentos/layout", model);
 		}
 		categoriaService.editar(categoria);
 		return new ModelAndView("redirect:/funcionario/categorias");

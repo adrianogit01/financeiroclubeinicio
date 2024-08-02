@@ -68,13 +68,13 @@ public class MovimentoController {
 		model.addAttribute("movimentos",
 				movimentoService.listarPagina(PageRequest.of(pagina.orElse(1) - 1, tamanho.orElse(20))));
 		model.addAttribute("conteudo", "movimentoLista");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@GetMapping("/cadastro")
 	public ModelAndView getMovimentoCadastro(@ModelAttribute("movimento") Movimento movimento) {
 		movimento.setData(LocalDate.now());
-		return new ModelAndView("fragmentos/layoutFuncionario", "conteudo", "movimentoCadastro");
+		return new ModelAndView("fragmentos/layout", "conteudo", "movimentoCadastro");
 	}
 
 	@GetMapping("/{idMovimento}/cadastro")
@@ -82,7 +82,7 @@ public class MovimentoController {
 		Movimento movimento = movimentoService.ler(idMovimento);
 		model.addAttribute("movimento", movimento);
 		model.addAttribute("conteudo", "movimentoCadastro");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@PostMapping(value = "/cadastro")
@@ -92,7 +92,7 @@ public class MovimentoController {
 		if (validacao.hasErrors()) {
 			movimento.setIdMovimento(null);
 			model.addAttribute("conteudo", "movimentoCadastro");
-			return new ModelAndView("fragmentos/layoutFuncionario", model);
+			return new ModelAndView("fragmentos/layout", model);
 		}
 		movimentoService.salvar(movimento);
 		return new ModelAndView("redirect:/funcionario/movimentos");
@@ -105,7 +105,7 @@ public class MovimentoController {
 		movimentoService.validar(movimento, validacao);
 		if (validacao.hasErrors()) {
 			model.addAttribute("conteudo", "movimentoCadastro");
-			return new ModelAndView("fragmentos/layoutFuncionario", "conteudo", "movimentoCadastro");
+			return new ModelAndView("fragmentos/layout", "conteudo", "movimentoCadastro");
 		}
 		movimentoService.editar(movimento);
 		return new ModelAndView("redirect:/funcionario/movimentos");

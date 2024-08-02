@@ -42,7 +42,7 @@ public class UsuarioController {
 		model.addAttribute("usuarios",
 				usuarioService.listarPagina(PageRequest.of(pagina.orElse(1) - 1, tamanho.orElse(20))));
 				model.addAttribute("conteudo", "usuarioLista");
-				return new ModelAndView("fragmentos/layoutFuncionario", model);
+				return new ModelAndView("fragmentos/layout", model);
 	}
 
 	//Responsável pelo modal de cadastrar.
@@ -50,7 +50,7 @@ public class UsuarioController {
 	public ModelAndView getUsuarioCadastro(@ModelAttribute("usuario") Usuario usuario, ModelMap model) {
 		model.addAttribute("tipo", "");
 		model.addAttribute("conteudo", "usuarioCadastro");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 	
 
@@ -61,7 +61,7 @@ public class UsuarioController {
 			model.addAttribute("usuario", usuario);
 			
 	model.addAttribute("conteudo", "usuarioCadastro");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@PostMapping(value = "/adicionar")
@@ -86,7 +86,7 @@ public class UsuarioController {
 		usuarioService.salvar(usuario);
 		if (validacao.hasErrors()) {
 			usuario.setId(null);
-			return new ModelAndView("fragmentos/layoutFuncionario", "conteudo", "usuarioCadastro");
+			return new ModelAndView("fragmentos/layout", "conteudo", "usuarioCadastro");
 		}
 		return new ModelAndView("redirect:/funcionario/usuario");
 	}
@@ -95,7 +95,7 @@ public class UsuarioController {
 	public ModelAndView putUsuarioCadastro(@Valid @ModelAttribute("usuario") Usuario usuario,
 			ModelMap model, BindingResult validacao) {
 		if (validacao.hasErrors()) {
-			return new ModelAndView("fragmentos/layoutFuncionario", "conteudo", "usuarioCadastro");
+			return new ModelAndView("fragmentos/layout", "conteudo", "usuarioCadastro");
 		}
 		usuarioService.editar(usuario);
 		return new ModelAndView("redirect:/funcionario/usuario");

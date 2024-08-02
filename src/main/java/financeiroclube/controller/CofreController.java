@@ -41,14 +41,14 @@ public class CofreController {
 		model.addAttribute("cofres",
 				cofreService.listarPagina(PageRequest.of(pagina.orElse(1) - 1, tamanho.orElse(20))));
 		model.addAttribute("conteudo", "cofreLista");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@GetMapping("/cadastro")
 	public ModelAndView getCofreCadastro(@ModelAttribute("cofre") Cofre cofre, ModelMap model) {
 		cofre.setSaldoInicial(BigDecimal.ZERO);
 		model.addAttribute("conteudo", "cofreCadastro");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@GetMapping("/{idCofre}/cadastro")
@@ -58,7 +58,7 @@ public class CofreController {
 			model.addAttribute("cofre", cofre);
 					
 		model.addAttribute("conteudo", "cofreCadastro");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@PostMapping(value = "/cadastro")
@@ -68,7 +68,7 @@ public class CofreController {
 		if (validacao.hasErrors()) {
 			cofre.setIdCofre(null);
 			model.addAttribute("conteudo", "cofreCadastro");
-			return new ModelAndView("fragmentos/layoutFuncionario", model);
+			return new ModelAndView("fragmentos/layout", model);
 		}
 		cofreService.salvar(cofre);
 		return new ModelAndView("redirect:/funcionario/cofres");
@@ -81,7 +81,7 @@ public class CofreController {
 		cofreService.validar(cofre, validacao);
 		if (validacao.hasErrors()) {
 			model.addAttribute("conteudo", "cofreCadastro");
-			return new ModelAndView("fragmentos/layoutFuncionario", model);
+			return new ModelAndView("fragmentos/layout", model);
 		}
 		cofreService.editar(cofre);
 		return new ModelAndView("redirect:/funcionario/cofres");

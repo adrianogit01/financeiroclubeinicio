@@ -59,7 +59,7 @@ public class SubcategoriaController {
 	public ModelAndView getSubcategorias(ModelMap model) {
 		model.addAttribute("contagemSubcategorias", subcategoriaService.contagem());
 		model.addAttribute("conteudo", "categoriaLista");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@GetMapping("/cadastro")
@@ -67,7 +67,7 @@ public class SubcategoriaController {
 			ModelMap model) {
 		model.addAttribute("classe", TipoClasseCategoria.S);
 		model.addAttribute("conteudo", "categoriaCadastro");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@GetMapping("/{idSubcategoria}/cadastro")
@@ -75,7 +75,7 @@ public class SubcategoriaController {
 		model.addAttribute("classe", TipoClasseCategoria.S);
 		model.addAttribute("categoria", subcategoriaService.ler(idSubcategoria));
 		model.addAttribute("conteudo", "categoriaCadastro");
-		return new ModelAndView("fragmentos/layoutFuncionario", model);
+		return new ModelAndView("fragmentos/layout", model);
 	}
 
 	@PostMapping("/cadastro")
@@ -86,7 +86,7 @@ public class SubcategoriaController {
 			categoria.setIdSubcategoria(null);
 			model.addAttribute("classe", TipoClasseCategoria.S);
 			model.addAttribute("conteudo", "categoriaCadastro");
-			return new ModelAndView("fragmentos/layoutFuncionario", model);
+			return new ModelAndView("fragmentos/layout", model);
 		}
 		subcategoriaService.salvar(categoria);
 		return new ModelAndView("redirect:/funcionario/subcategorias");
@@ -99,7 +99,7 @@ public class SubcategoriaController {
 		if (validacao.hasErrors()) {
 			model.addAttribute("classe", TipoClasseCategoria.S);
 			model.addAttribute("conteudo", "categoriaCadastro");
-			return new ModelAndView("fragmentos/layoutFuncionario", model);
+			return new ModelAndView("fragmentos/layout", model);
 		}
 		subcategoriaService.editar(categoria);
 		return new ModelAndView("redirect:/funcionario/subcategorias");
