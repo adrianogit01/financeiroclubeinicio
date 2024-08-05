@@ -11,7 +11,7 @@
 		<main role="main">
 		<h3 class="font-weight-light">Cadastro de Usuário</h3>
 	<p th:text="${usuario.id == null} ? 'Ao salvar, uma novo usuario será criada no clube.' : (${param.somenteLeitura} ? 'As informações não podem ser alteradas neste modo.' :  'Ao salvar, as informações da usuario atual serão atualizadas.')"></p>
-		<form th:action="@{/usuario/adicionar}" th:object="${usuario}" th:method="${usuario.id == null} ? post : put">
+		<form th:action="@{/funcionario/usuario/adicionar}" th:object="${usuario}" th:method="${usuario.id == null} ? post : put">
 		<!--<form th:action="@{/usuario/adicionar}" th:method="post">-->
 		 <!--<form method="POST" id="form_add">-->
 			<fieldset th:disabled="${param.somenteLeitura}" class="mb-3">
