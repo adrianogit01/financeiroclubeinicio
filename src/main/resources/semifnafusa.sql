@@ -1,6 +1,6 @@
 use semifnafusa;
 
-CREATE TABLE IF NOT EXISTS `semifnafusa`.`role` (
+CREATE TABLE IF NOT EXISTS `semifnafusa`.`roles` (
   `nome_role` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`nome_role`))
 ENGINE = InnoDB
