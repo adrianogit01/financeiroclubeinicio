@@ -24,7 +24,7 @@ import financeiroclube.entity.Usuario;
 import financeiroclube.service.UsuarioService;
 
 @Controller
-@RequestMapping("funcionario/usuario")
+@RequestMapping("funcionario/usuarios")
 public class UsuarioController {
 
 	@Autowired
@@ -69,14 +69,14 @@ public class UsuarioController {
 			ModelMap model) {
 				
 		usuarioService.salvar(usuario);
-		return new ModelAndView("redirect:/funcionario/usuario");
+		return new ModelAndView("redirect:/funcionario/usuarios");
 	}
 
 	@PutMapping(value = "/adicionar")
 	public ModelAndView putUsuarioCadastro(@Valid @ModelAttribute("usuario") Usuario usuario,
 			ModelMap model) {
 		usuarioService.editar(usuario);
-		return new ModelAndView("redirect:/funcionario/usuario");
+		return new ModelAndView("redirect:/funcionario/usuarios");
 	}
 	
 	/*@PostMapping(value = "/adicionar")
@@ -88,7 +88,7 @@ public class UsuarioController {
 			usuario.setId(null);
 			return new ModelAndView("fragmentos/layout", "conteudo", "usuarioCadastro");
 		}
-		return new ModelAndView("redirect:/funcionario/usuario");
+		return new ModelAndView("redirect:/funcionario/usuarios");
 	}
 
 	@PutMapping(value = "/adicionar")
@@ -98,7 +98,7 @@ public class UsuarioController {
 			return new ModelAndView("fragmentos/layout", "conteudo", "usuarioCadastro");
 		}
 		usuarioService.editar(usuario);
-		return new ModelAndView("redirect:/funcionario/usuario");
+		return new ModelAndView("redirect:/funcionario/usuarios");
 	}*/
 	
 	
@@ -108,7 +108,7 @@ public class UsuarioController {
 	@DeleteMapping(value="/deletar/{id}")
 		public ModelAndView deletarUsuario(@RequestParam("idObj") Long idObj) {
 			usuarioService.excluir(usuarioService.ler(idObj));
-			return new ModelAndView("redirect:/funcionario/usuario");
+			return new ModelAndView("redirect:/funcionario/usuarios");
 	}
 	
 	

@@ -33,18 +33,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .antMatchers("/funcionario/movimentos/cadastro").hasRole("ADMIN")
                 .antMatchers("/funcionario/pendencias/cadastro").hasRole("ADMIN")
                 .antMatchers("/funcionario/periodos/cadastro").hasRole("ADMIN")
-                .antMatchers("/funcionario/usuario/cadastro").hasRole("ADMIN")
+                .antMatchers("/funcionario/usuarios/cadastro").hasRole("ADMIN")
                 .antMatchers("/funcionario/{idMovimento}/cadastro").hasRole("ADMIN")
 				.antMatchers("/deletar/{id}").hasRole("ADMIN")
 				.antMatchers("/atualizar/{id}").hasRole("ADMIN")
-				//.antMatchers("/funcionario/usuario").hasRole("ADMIN")
-				.antMatchers("/funcionario/usuario/adicionar").hasRole("ADMIN")
-				.antMatchers("/funcionario/usuario/getusuario/{id}").hasRole("ADMIN")
+				//.antMatchers("/funcionario/usuarios").hasRole("ADMIN")
+				.antMatchers("/funcionario/usuarios/adicionar").hasRole("ADMIN")
+				.antMatchers("/funcionario/usuarios/getusuario/{id}").hasRole("ADMIN")
 				//.antMatchers(HttpMethod.GET,"/funcionario/relatorios/atraso").hasRole("ADMIN")
 				.anyRequest().authenticated()
-				.and().formLogin().loginPage("/funcionario/usuario/logar").defaultSuccessUrl("/",true)
-				.failureUrl("/funcionario/usuario/logar").permitAll()
-				.and().logout().logoutUrl("/logout").logoutSuccessUrl("/funcionario/usuario/logar").permitAll();
+				.and().formLogin().loginPage("/funcionario/usuarios/logar").defaultSuccessUrl("/",true)
+				.failureUrl("/funcionario/usuarios/logar").permitAll()
+				.and().logout().logoutUrl("/logout").logoutSuccessUrl("/funcionario/usuarios/logar").permitAll();
 	}
 	
 	@Override
