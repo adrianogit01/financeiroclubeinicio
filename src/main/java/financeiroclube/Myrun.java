@@ -31,7 +31,7 @@ public class Myrun implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		Usuario user = new Usuario(1,"admin","Usuário Padrão","(00) 00000-0000","admin@admin.com","$2a$10$wo7WLU7ZU9axJP3kzgs6B.Cd61WbsuDwD4Fv4uTG0JUHbkW5llONG", "ADMINISTRADOR");
+		Usuario user = new Usuario(1,"admin","Usuário Padrão","(00) 00000-0000","admin@admin.com","$2a$10$GQ4LVnIp4D9k5ycxIPktEOnv8CBstcnyBDadCN6rFqzES2bJgH1MK", "ADMINISTRADOR");
 		boolean existe = usuarioService.userExist(1);
 		boolean roleAdm = roleService.roleExist("ROLE_ADMIN");
 		boolean roleUser = roleService.roleExist("ROLE_USER");
